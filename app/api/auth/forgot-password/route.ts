@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import prisma from "@/lib/prisma"
+
+export const runtime = 'nodejs'
 import { generateResetToken } from "@/lib/tokens"
 import { sendPasswordResetEmail } from "@/lib/email"
 

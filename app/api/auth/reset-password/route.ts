@@ -2,6 +2,8 @@ import { NextResponse } from "next/server"
 import { z } from "zod"
 import bcrypt from "bcryptjs"
 import prisma from "@/lib/prisma"
+
+export const runtime = 'nodejs'
 import { verifyResetToken } from "@/lib/tokens"
 
 const schema = z.object({

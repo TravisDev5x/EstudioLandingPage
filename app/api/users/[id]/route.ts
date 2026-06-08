@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '../../../../lib/prisma';
+
+export const runtime = 'nodejs'
 import { updateUserSchema } from '../../../../lib/validations';
 
 type RouteContext = { params: Promise<{ id: string }> };

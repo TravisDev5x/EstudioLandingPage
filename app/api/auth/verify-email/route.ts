@@ -1,6 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { verifyEmailToken } from "@/lib/tokens"
 
+export const runtime = 'nodejs'
+
 export async function GET(request: NextRequest) {
   const token = request.nextUrl.searchParams.get("token")
 

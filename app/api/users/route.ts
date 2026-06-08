@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '../../../lib/prisma';
+
+export const runtime = 'nodejs'
 import { createUserSchema } from '../../../lib/validations';
 
 // Leer todos los usuarios (Ruta GET) con paginación y búsqueda
