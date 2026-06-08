@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '../../../lib/prisma';
+import { createUserSchema } from '../../../lib/validations';
 
 // Leer todos los usuarios (Ruta GET) con paginación y búsqueda
 export async function GET(request: Request) {
@@ -41,12 +42,15 @@ export async function GET(request: Request) {
 // Crear un nuevo usuario (Ruta POST)
 export async function POST(request: Request) {
   try {
-    const data = await request.json();
-    
+    const parsed = createUserSchema.safeParse(await request.json());
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.flatten().fieldErrors }, { status: 422 });
+    }
+
     const nuevoUsuario = await prisma.user.create({
       data: {
-        nombre: data.nombre,
-        email: data.email,
+        nombre: parsed.data.nombre,
+        email: parsed.data.email,
       },
     });
 

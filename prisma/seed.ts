@@ -1,0 +1,26 @@
+import "dotenv/config"
+import { PrismaClient } from "@prisma/client"
+import { PrismaMariaDb } from "@prisma/adapter-mariadb"
+import bcrypt from "bcryptjs"
+
+const adapter = new PrismaMariaDb(process.env.DATABASE_URL as string)
+const prisma = new PrismaClient({ adapter })
+
+async function main() {
+  const hashed = await bcrypt.hash("admin123", 10)
+
+  await prisma.adminUser.upsert({
+    where: { email: "admin@estudio.com" },
+    update: {},
+    create: {
+      email: "admin@estudio.com",
+      name: "Admin",
+      password: hashed,
+      emailVerified: true,
+    },
+  })
+
+  console.log("✓ Seed completado: admin@estudio.com / admin123")
+}
+
+main().catch(console.error).finally(() => prisma.$disconnect())

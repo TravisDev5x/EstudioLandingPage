@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '../../../../lib/prisma';
+import { updateUserSchema } from '../../../../lib/validations';
 
 type RouteContext = { params: Promise<{ id: string }> };
 
@@ -7,13 +8,16 @@ type RouteContext = { params: Promise<{ id: string }> };
 export async function PUT(request: Request, { params }: RouteContext) {
   try {
     const { id } = await params;
-    const data = await request.json();
+    const parsed = updateUserSchema.safeParse(await request.json());
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.flatten().fieldErrors }, { status: 422 });
+    }
 
     const usuarioActualizado = await prisma.user.update({
       where: { id: Number(id) },
       data: {
-        nombre: data.nombre,
-        email: data.email,
+        nombre: parsed.data.nombre,
+        email: parsed.data.email,
       },
     });
 

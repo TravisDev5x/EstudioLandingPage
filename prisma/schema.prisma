@@ -13,3 +13,16 @@ model User {
   creadoEn  DateTime  @default(now())
   deletedAt DateTime?
 }
+
+model AdminUser {
+  id             Int       @id @default(autoincrement())
+  email          String    @unique
+  password       String
+  name           String
+  createdAt      DateTime  @default(now())
+  emailVerified  Boolean   @default(false)
+  verifyToken    String?   @unique
+  verifyTokenExp DateTime?
+  resetToken     String?   @unique
+  resetTokenExp  DateTime?
+}

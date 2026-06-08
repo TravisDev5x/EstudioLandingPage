@@ -1,468 +1,400 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import LandingNavbar from "@/app/(landing)/_components/Navbar";
+import LandingFooter from "@/app/(landing)/_components/Footer";
+import { Button, Card, CardContent, Chip } from "@heroui/react";
 import {
-  Card,
-  CardContent,
-  TextField,
-  Input,
-  Label,
-  SearchField,
-  SearchFieldGroup,
-  SearchFieldInput,
-  SearchFieldClearButton,
-  Button,
-  Switch,
-  Chip,
-  Avatar,
-  AvatarFallback,
-  Tooltip,
-  TooltipContent,
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationPrevious,
-  PaginationNext,
-  PaginationEllipsis,
-  Skeleton,
-  Modal,
-  ModalBackdrop,
-  ModalContainer,
-  ModalDialog,
-  ModalHeader,
-  ModalHeading,
-  ModalBody,
-  ModalFooter,
-  toast,
-} from "@heroui/react";
+  Calendar,
+  Play,
+  ChevronDown,
+  Mic,
+  Music,
+  BookOpen,
+  Image as ImageIcon,
+  CheckCircle2,
+  MapPin,
+  Mail,
+  Phone,
+} from "lucide-react";
 
-type EditingUser = { id: number; nombre: string; email: string };
-type ConfirmDelete = { id: number; nombre: string } | null;
-
-const LIMIT = 5;
-
-const getPageNumbers = (current: number, total: number): (number | "ellipsis")[] => {
-  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
-  const pages: (number | "ellipsis")[] = [1];
-  if (current > 3) pages.push("ellipsis");
-  for (let p = Math.max(2, current - 1); p <= Math.min(total - 1, current + 1); p++) pages.push(p);
-  if (current < total - 2) pages.push("ellipsis");
-  pages.push(total);
-  return pages;
-};
-
-const SearchIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    aria-hidden="true"
-    fill="none"
-    height="1em"
-    viewBox="0 0 24 24"
-    width="1em"
-    {...props}
-  >
-    <path
-      d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.5"
-    />
-    <path d="M22 22L20 20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
-  </svg>
-);
-
-export default function Home() {
-  const [nombre, setNombre] = useState("");
-  const [email, setEmail] = useState("");
-  const [usuarios, setUsuarios] = useState<any[]>([]);
-  const [editingUser, setEditingUser] = useState<EditingUser | null>(null);
-  const [showTrash, setShowTrash] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [confirmDelete, setConfirmDelete] = useState<ConfirmDelete>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const searchRef = useRef("");
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const fetchUsuarios = async (page: number) => {
-    setIsLoading(true);
-    const params = new URLSearchParams();
-    params.set("page", String(page));
-    params.set("limit", String(LIMIT));
-    if (showTrash) params.set("trash", "true");
-    if (searchRef.current.trim() !== "") params.set("search", searchRef.current.trim());
-
-    const res = await fetch(`/api/users?${params.toString()}`);
-    const data = await res.json();
-    setUsuarios(data.usuarios);
-    setCurrentPage(data.page);
-    setTotalPages(data.totalPages);
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    fetchUsuarios(currentPage);
-  }, [showTrash]);
-
-  const handleSearchChange = (value: string) => {
-    setSearchTerm(value);
-    searchRef.current = value;
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {
-      setCurrentPage(1);
-      fetchUsuarios(1);
-    }, 300);
-  };
-
-  const handleSearchClear = () => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    setSearchTerm("");
-    searchRef.current = "";
-    setCurrentPage(1);
-    fetchUsuarios(1);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const res = await fetch("/api/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre, email }),
-      });
-      if (!res.ok) throw new Error();
-      setNombre("");
-      setEmail("");
-      fetchUsuarios(currentPage);
-      toast.success("Usuario creado correctamente");
-    } catch {
-      toast.danger("Error al crear el usuario");
-    }
-  };
-
-  const handleDelete = async (id: number) => {
-    await fetch(`/api/users/${id}`, { method: "DELETE" });
-    fetchUsuarios(currentPage);
-    toast.success("Usuario movido a la papelera");
-  };
-
-  const handleRestore = async (id: number) => {
-    await fetch(`/api/users/${id}`, { method: "PATCH" });
-    fetchUsuarios(currentPage);
-    toast.success("Usuario restaurado");
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    fetchUsuarios(page);
-  };
-
-  const handleUpdate = async () => {
-    if (!editingUser) return;
-    try {
-      const res = await fetch(`/api/users/${editingUser.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre: editingUser.nombre, email: editingUser.email }),
-      });
-      if (!res.ok) throw new Error();
-      setEditingUser(null);
-      fetchUsuarios(currentPage);
-      toast.success("Usuario actualizado");
-    } catch {
-      toast.danger("Error al actualizar");
-    }
-  };
-
+// ── Hero ─────────────────────────────────────────────────────────
+function HeroSection() {
   return (
-    <main className="min-h-screen bg-[#0a0e1a] flex items-center justify-center p-8">
-      {/* Orbs de fondo */}
-      <div
-        style={{
-          position: "fixed",
-          top: -100,
-          left: -100,
-          width: 320,
-          height: 320,
-          borderRadius: "50%",
-          background: "#4f46e5",
-          filter: "blur(80px)",
-          opacity: 0.18,
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      />
-      <div
-        style={{
-          position: "fixed",
-          bottom: -80,
-          right: -80,
-          width: 260,
-          height: 260,
-          borderRadius: "50%",
-          background: "#0ea5e9",
-          filter: "blur(80px)",
-          opacity: 0.18,
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      />
-      <div
-        style={{
-          position: "fixed",
-          top: "40%",
-          right: "15%",
-          width: 200,
-          height: 200,
-          borderRadius: "50%",
-          background: "#7c3aed",
-          filter: "blur(80px)",
-          opacity: 0.18,
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      />
+    <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden px-6 text-center">
+      <div className="absolute -top-24 -left-24 w-[400px] h-[400px] rounded-full bg-[#4f46e5] blur-[80px] opacity-[0.15] pointer-events-none" />
+      <div className="absolute -bottom-20 -right-20 w-[350px] h-[350px] rounded-full bg-[#0ea5e9] blur-[80px] opacity-[0.15] pointer-events-none" />
+      <div className="absolute top-1/2 right-[15%] w-[250px] h-[250px] rounded-full bg-[#7c3aed] blur-[80px] opacity-[0.12] pointer-events-none" />
 
-      {/* Card principal */}
-      <Card className="w-full max-w-md relative z-10">
-        <CardContent className="p-10">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-[22px] font-medium text-white/90 mb-1">Registro de Usuarios</h1>
-            <p className="text-[13px] text-white/40">Añade y gestiona los usuarios del sistema</p>
+      <div className="relative z-10 flex flex-col items-center gap-6 max-w-2xl">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-indigo-500/25 bg-indigo-500/[0.08] text-[13px] text-indigo-300">
+          <Music size={12} />
+          Estudio de grabación · Ecatepec
+        </div>
+
+        <h1 className="font-medium leading-[1.1] tracking-[-0.02em] text-[clamp(40px,8vw,80px)]">
+          <span className="text-white">Donde nacen</span>
+          <br />
+          <span className="text-indigo-400/90">las ideas.</span>
+        </h1>
+
+        <p className="text-[18px] text-white/50 max-w-[520px]">
+          Grabación, producción musical y clases en un espacio diseñado para artistas serios.
+        </p>
+
+        <div className="flex items-center gap-3 mt-2">
+          <Button variant="primary" size="lg" className="flex items-center gap-2">
+            <Calendar size={16} />
+            Reservar sesión
+          </Button>
+          <Button variant="ghost" size="lg" className="flex items-center gap-2">
+            <Play size={16} />
+            Escuchar muestras
+          </Button>
+        </div>
+      </div>
+
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/30 animate-[scroll-bounce_2s_ease-in-out_infinite]">
+        <ChevronDown size={24} />
+      </div>
+    </section>
+  );
+}
+
+// ── About ─────────────────────────────────────────────────────────
+function AboutSection() {
+  return (
+    <section id="about" className="py-[120px] px-6">
+      <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+        <div className="flex flex-col gap-5">
+          <p className="text-[11px] uppercase tracking-[0.15em] text-indigo-400/80">Nosotros</p>
+          <h2 className="font-medium leading-tight text-[clamp(28px,4vw,42px)] text-white/90">
+            Un espacio para crear sin límites
+          </h2>
+          <p className="text-[16px] text-white/55 leading-[1.8]">
+            Somos un estudio independiente en Ecatepec enfocado en música electrónica, producción y
+            formación de artistas. Cada proyecto recibe atención personalizada.
+          </p>
+          <div className="flex items-start gap-8 mt-2">
+            {(
+              [
+                ["5+", "Años de experiencia"],
+                ["200+", "Proyectos grabados"],
+                ["50+", "Artistas formados"],
+              ] as const
+            ).map(([num, label]) => (
+              <div key={label}>
+                <p className="text-[32px] font-medium text-white leading-none mb-1">{num}</p>
+                <p className="text-[12px] text-white/40">{label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <Card className="border border-white/[0.07] bg-white/[0.03]">
+          <CardContent className="flex items-center justify-center p-0" style={{ aspectRatio: "4/3" }}>
+            <div className="flex flex-col items-center gap-2 text-white/20">
+              <ImageIcon size={32} />
+              <span className="text-[13px]">Foto del estudio</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </section>
+  );
+}
+
+// ── Services ──────────────────────────────────────────────────────
+const services = [
+  {
+    icon: Mic,
+    title: "Grabación",
+    desc: "Sala acondicionada acústicamente con equipo profesional para vocales e instrumentos.",
+  },
+  {
+    icon: Music,
+    title: "Producción Musical",
+    desc: "Producción completa desde el concepto hasta la mezcla final. Trance, Techno y géneros electrónicos.",
+  },
+  {
+    icon: BookOpen,
+    title: "Clases",
+    desc: "Aprende producción, síntesis y mezcla con metodología práctica y enfoque profesional.",
+  },
+];
+
+function ServicesSection() {
+  return (
+    <section id="servicios" className="py-[120px] px-6 bg-white/[0.015]">
+      <div className="max-w-[1100px] mx-auto">
+        <div className="text-center mb-14">
+          <p className="text-[11px] uppercase tracking-[0.15em] text-indigo-400/80 mb-3">Servicios</p>
+          <h2 className="font-medium text-[clamp(28px,4vw,42px)] text-white/90">
+            Todo lo que necesitas para crear
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {services.map(({ icon: Icon, title, desc }) => (
+            <Card
+              key={title}
+              className="border border-white/[0.07] bg-white/[0.03] hover:border-indigo-500/40 hover:bg-indigo-500/[0.05] transition-all duration-200"
+            >
+              <CardContent className="p-8 flex flex-col gap-4">
+                <Icon size={28} className="text-indigo-400" />
+                <h3 className="text-[17px] font-medium text-white/90">{title}</h3>
+                <p className="text-[14px] text-white/50 leading-relaxed">{desc}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Pricing ───────────────────────────────────────────────────────
+const pricingPlans = [
+  {
+    name: "Sesión",
+    price: "$XXX / hora",
+    highlight: false,
+    features: ["Sala principal", "Técnico incluido", "2 horas mínimo", "Mezcla básica"],
+    cta: "Consultar",
+    variant: "ghost" as const,
+  },
+  {
+    name: "Paquete",
+    price: "$X,XXX / mes",
+    highlight: true,
+    features: [
+      "Acceso mensual 20h",
+      "Técnico incluido",
+      "Mezcla profesional",
+      "Master incluido",
+      "Distribución digital",
+      "1 videoclip simple",
+    ],
+    cta: "Reservar",
+    variant: "primary" as const,
+  },
+  {
+    name: "Membresía",
+    price: "$X,XXX / mes",
+    highlight: false,
+    features: [
+      "Acceso ilimitado",
+      "Uso de equipos",
+      "Clases incluidas",
+      "Comunidad privada",
+      "Descuentos exclusivos",
+    ],
+    cta: "Consultar",
+    variant: "ghost" as const,
+  },
+];
+
+function PricingSection() {
+  return (
+    <section id="precios" className="py-[120px] px-6">
+      <div className="max-w-[900px] mx-auto">
+        <div className="text-center mb-14">
+          <p className="text-[11px] uppercase tracking-[0.15em] text-indigo-400/80 mb-3">Precios</p>
+          <h2 className="font-medium text-[clamp(28px,4vw,42px)] text-white/90">
+            Planes simples y transparentes
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {pricingPlans.map((plan) => (
+            <Card
+              key={plan.name}
+              className={`border transition-all duration-200 ${
+                plan.highlight
+                  ? "border-indigo-500/50 bg-indigo-500/[0.08]"
+                  : "border-white/[0.07] bg-white/[0.03]"
+              }`}
+            >
+              <CardContent className="p-6 flex flex-col gap-5">
+                {plan.highlight && (
+                  <Chip size="sm" variant="soft" className="self-start text-indigo-300 bg-indigo-500/20">
+                    Popular
+                  </Chip>
+                )}
+                <div>
+                  <h3 className="text-[17px] font-medium text-white/90 mb-1">{plan.name}</h3>
+                  <p className="text-[22px] font-medium text-white">{plan.price}</p>
+                </div>
+                <ul className="flex flex-col gap-2 flex-1">
+                  {plan.features.map((f) => (
+                    <li key={f} className="flex items-center gap-2 text-[14px] text-white/60">
+                      <CheckCircle2 size={14} className="text-green-400 shrink-0" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Button variant={plan.variant} className="w-full mt-2">
+                  {plan.cta}
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Blog Preview ──────────────────────────────────────────────────
+const blogPosts = [
+  {
+    slug: "sintesis-primer-set",
+    category: "Producción",
+    title: "Cómo armar tu primer set de síntesis",
+    excerpt: "Guía paso a paso para productores que comienzan en el mundo del synthesis analógico y virtual.",
+  },
+  {
+    slug: "mezcla-en-el-cuarto",
+    category: "Técnica",
+    title: "Mezcla en el cuarto: errores comunes",
+    excerpt: "Los errores que todo productor comete al mezclar en casa y cómo evitarlos con equipo accesible.",
+  },
+  {
+    slug: "plugins-esenciales-techno",
+    category: "Equipo",
+    title: "5 plugins esenciales para Techno y Trance",
+    excerpt: "Una selección curada de plugins que definen el sonido de los géneros electrónicos más populares.",
+  },
+];
+
+function BlogPreviewSection() {
+  return (
+    <section id="blog" className="py-[120px] px-6 bg-white/[0.015]">
+      <div className="max-w-[1100px] mx-auto">
+        <div className="text-center mb-14">
+          <p className="text-[11px] uppercase tracking-[0.15em] text-indigo-400/80 mb-3">Blog</p>
+          <h2 className="font-medium text-[clamp(28px,4vw,42px)] text-white/90">
+            Recursos para productores
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {blogPosts.map((post) => (
+            <Card key={post.slug} className="border border-white/[0.07] bg-white/[0.03] overflow-hidden">
+              <CardContent className="p-0">
+                <div className="aspect-video bg-white/[0.03] border-b border-white/[0.06] flex items-center justify-center">
+                  <ImageIcon size={22} className="text-white/20" />
+                </div>
+                <div className="p-5 flex flex-col gap-3">
+                  <Chip size="sm" variant="soft" className="self-start text-indigo-300 bg-indigo-500/[0.12]">
+                    {post.category}
+                  </Chip>
+                  <h3 className="text-[15px] font-medium text-white/90 leading-snug">{post.title}</h3>
+                  <p className="text-[13px] text-white/45 leading-relaxed line-clamp-2">{post.excerpt}</p>
+                  <a
+                    href={`/blog/${post.slug}`}
+                    className="text-[13px] text-indigo-400/80 hover:text-indigo-300 transition-colors"
+                  >
+                    Leer más →
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <div className="text-center">
+          <a href="/blog" className="text-[14px] text-indigo-400/80 hover:text-indigo-300 transition-colors">
+            Ver todos los posts →
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Contact ───────────────────────────────────────────────────────
+function ContactSection() {
+  return (
+    <section id="contacto" className="py-[120px] px-6">
+      <div className="max-w-[900px] mx-auto">
+        <div className="text-center mb-14">
+          <p className="text-[11px] uppercase tracking-[0.15em] text-indigo-400/80 mb-3">Contacto</p>
+          <h2 className="font-medium text-[clamp(28px,4vw,42px)] text-white/90">
+            Hablemos de tu proyecto
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
+          <div className="flex flex-col gap-5">
+            {(
+              [
+                { Icon: MapPin, text: "Ecatepec, Estado de México" },
+                { Icon: Mail, text: "contacto@studio.mx" },
+                { Icon: Phone, text: "+52 55 XXXX XXXX" },
+              ] as const
+            ).map(({ Icon, text }) => (
+              <div key={text} className="flex items-center gap-3 text-[15px] text-white/60">
+                <Icon size={16} className="text-indigo-400/70 shrink-0" />
+                {text}
+              </div>
+            ))}
+            <div className="flex items-center gap-3 mt-2">
+              <button
+                className="p-2 rounded-lg border border-white/[0.07] text-white/40 hover:text-white/70 hover:border-white/20 transition-colors"
+                aria-label="Instagram"
+              >
+                <Music size={16} />
+              </button>
+              <button
+                className="p-2 rounded-lg border border-white/[0.07] text-white/40 hover:text-white/70 hover:border-white/20 transition-colors"
+                aria-label="SoundCloud"
+              >
+                <Music size={16} />
+              </button>
+            </div>
           </div>
 
-          {/* Formulario */}
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <TextField value={nombre} onChange={setNombre} isRequired>
-              <Label>Nombre</Label>
-              <Input placeholder="Ej. Juan Pérez" className="bg-white/5 border-white/10" />
-            </TextField>
-            <TextField value={email} onChange={setEmail} isRequired>
-              <Label>Correo electrónico</Label>
-              <Input type="email" placeholder="ejemplo@correo.com" className="bg-white/5 border-white/10" />
-            </TextField>
-            <Button type="submit" variant="primary" className="w-full" size="md">
-              Guardar usuario
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[13px] text-white/60">Nombre</label>
+              <input
+                type="text"
+                placeholder="Tu nombre"
+                className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2.5 text-[14px] text-white/90 placeholder:text-white/25 outline-none focus:border-indigo-500/50 transition-colors"
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[13px] text-white/60">Email</label>
+              <input
+                type="email"
+                placeholder="tu@email.com"
+                className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2.5 text-[14px] text-white/90 placeholder:text-white/25 outline-none focus:border-indigo-500/50 transition-colors"
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[13px] text-white/60">Mensaje</label>
+              <textarea
+                rows={4}
+                placeholder="Cuéntanos sobre tu proyecto..."
+                className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2.5 text-[14px] text-white/90 placeholder:text-white/25 outline-none focus:border-indigo-500/50 transition-colors resize-none"
+              />
+            </div>
+            <Button variant="primary" className="w-full mt-1">
+              Enviar mensaje
             </Button>
-          </form>
-
-          {/* Divider */}
-          <div className="h-px bg-white/8 my-8" />
-
-          {/* Búsqueda */}
-          <SearchField value={searchTerm} onChange={handleSearchChange} onClear={handleSearchClear} className="mb-5">
-            <SearchFieldGroup className="bg-white/5 border-white/10">
-              <SearchIcon className="text-white/40" />
-              <SearchFieldInput placeholder="Buscar por nombre o email..." />
-              <SearchFieldClearButton />
-            </SearchFieldGroup>
-          </SearchField>
-
-          {/* Encabezado de lista + toggle papelera */}
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-[11px] tracking-[0.1em] uppercase text-white/30">
-              {showTrash ? "Usuarios eliminados" : "Usuarios registrados"}
-            </p>
-            <Switch isSelected={showTrash} onChange={setShowTrash} size="sm">
-              <span className="text-xs text-white/40">Papelera</span>
-            </Switch>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
-          {isLoading ? (
-            <div className="flex flex-col gap-2">
-              {[0, 1, 2].map((i) => (
-                <Card key={i} className="w-full space-y-3 p-3 border border-white/8">
-                  <div className="flex items-center gap-3">
-                    <Skeleton className="w-9 h-9 rounded-full" />
-                    <div className="flex-1 space-y-2">
-                      <Skeleton className="h-3 w-3/4 rounded-lg" />
-                      <Skeleton className="h-3 w-1/2 rounded-lg" />
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          ) : usuarios.length === 0 ? (
-            <p className="text-center py-6 text-[13px] text-white/20">
-              {showTrash ? "La papelera está vacía." : "No hay usuarios registrados todavía."}
-            </p>
-          ) : (
-            <div className="flex flex-col gap-2">
-              {usuarios.map((user) => {
-                const initials = user.nombre
-                  .split(" ")
-                  .map((w: string) => w[0])
-                  .join("")
-                  .toUpperCase()
-                  .slice(0, 2);
-                return (
-                  <Card key={user.id} className="border border-white/8">
-                    <CardContent className="flex flex-row items-center gap-3 p-3">
-                      <Avatar size="sm" className="bg-indigo-500/30">
-                        <AvatarFallback className="text-indigo-300">{initials}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate text-white/85">{user.nombre}</p>
-                        <p className="text-xs truncate text-white/35">{user.email}</p>
-                      </div>
-                      <Chip size="sm" variant="soft" color="default">
-                        #{user.id}
-                      </Chip>
-                      <div className="flex gap-1">
-                        {!showTrash && (
-                          <Tooltip>
-                            <Button
-                              isIconOnly
-                              size="sm"
-                              variant="ghost"
-                              onPress={() =>
-                                setEditingUser({ id: user.id, nombre: user.nombre, email: user.email })
-                              }
-                            >
-                              ✏️
-                            </Button>
-                            <TooltipContent>Editar</TooltipContent>
-                          </Tooltip>
-                        )}
-                        {!showTrash ? (
-                          <Tooltip>
-                            <Button
-                              isIconOnly
-                              size="sm"
-                              variant="danger-soft"
-                              onPress={() => setConfirmDelete({ id: user.id, nombre: user.nombre })}
-                            >
-                              🗑️
-                            </Button>
-                            <TooltipContent>Eliminar</TooltipContent>
-                          </Tooltip>
-                        ) : (
-                          <Tooltip>
-                            <Button
-                              isIconOnly
-                              size="sm"
-                              variant="ghost"
-                              onPress={() => handleRestore(user.id)}
-                            >
-                              ↩️
-                            </Button>
-                            <TooltipContent>Restaurar</TooltipContent>
-                          </Tooltip>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          )}
-
-          <Pagination size="sm" className="mt-4">
-            <PaginationContent className="justify-center">
-              <PaginationItem>
-                <PaginationPrevious
-                  isDisabled={currentPage <= 1}
-                  onPress={() => handlePageChange(currentPage - 1)}
-                >
-                  Anterior
-                </PaginationPrevious>
-              </PaginationItem>
-              {getPageNumbers(currentPage, totalPages).map((p, i) =>
-                p === "ellipsis" ? (
-                  <PaginationItem key={`ellipsis-${i}`}>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                ) : (
-                  <PaginationItem key={p}>
-                    <PaginationLink isActive={p === currentPage} onPress={() => handlePageChange(p)}>
-                      {p}
-                    </PaginationLink>
-                  </PaginationItem>
-                )
-              )}
-              <PaginationItem>
-                <PaginationNext
-                  isDisabled={currentPage >= totalPages}
-                  onPress={() => handlePageChange(currentPage + 1)}
-                >
-                  Siguiente
-                </PaginationNext>
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </CardContent>
-      </Card>
-
-      {/* Modal de edición */}
-      <Modal isOpen={editingUser !== null} onOpenChange={(open) => !open && setEditingUser(null)}>
-        <ModalBackdrop variant="blur">
-          <ModalContainer>
-            <ModalDialog className="dark">
-              <ModalHeader>
-                <ModalHeading>Editar usuario</ModalHeading>
-              </ModalHeader>
-              <ModalBody>
-                <TextField
-                  value={editingUser?.nombre || ""}
-                  onChange={(v) => setEditingUser((u) => (u ? { ...u, nombre: v } : null))}
-                >
-                  <Label>Nombre</Label>
-                  <Input />
-                </TextField>
-                <TextField
-                  value={editingUser?.email || ""}
-                  onChange={(v) => setEditingUser((u) => (u ? { ...u, email: v } : null))}
-                >
-                  <Label>Email</Label>
-                  <Input type="email" />
-                </TextField>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="secondary" onPress={() => setEditingUser(null)}>
-                  Cancelar
-                </Button>
-                <Button variant="primary" onPress={handleUpdate}>
-                  Guardar cambios
-                </Button>
-              </ModalFooter>
-            </ModalDialog>
-          </ModalContainer>
-        </ModalBackdrop>
-      </Modal>
-
-      {/* Modal de confirmación de eliminación */}
-      <Modal isOpen={confirmDelete !== null} onOpenChange={(open) => !open && setConfirmDelete(null)}>
-        <ModalBackdrop variant="blur">
-          <ModalContainer size="sm">
-            <ModalDialog className="dark">
-              <ModalBody className="pt-6 text-center">
-                <p className="text-4xl mb-2">⚠️</p>
-                <p className="font-medium text-white/90">¿Eliminar usuario?</p>
-                <p className="text-sm text-white/40">
-                  Se moverá &quot;{confirmDelete?.nombre}&quot; a la papelera
-                </p>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="secondary" onPress={() => setConfirmDelete(null)}>
-                  Cancelar
-                </Button>
-                <Button
-                  variant="danger"
-                  onPress={() => {
-                    handleDelete(confirmDelete!.id);
-                    setConfirmDelete(null);
-                  }}
-                >
-                  Eliminar
-                </Button>
-              </ModalFooter>
-            </ModalDialog>
-          </ModalContainer>
-        </ModalBackdrop>
-      </Modal>
-    </main>
+// ── Page ──────────────────────────────────────────────────────────
+export default function LandingPage() {
+  return (
+    <div className="bg-[#0a0e1a] text-white overflow-x-hidden">
+      <LandingNavbar />
+      <HeroSection />
+      <AboutSection />
+      <ServicesSection />
+      <PricingSection />
+      <BlogPreviewSection />
+      <ContactSection />
+      <LandingFooter />
+    </div>
   );
 }
