@@ -64,6 +64,7 @@ export default function DashboardPage() {
 
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [usuarios, setUsuarios] = useState<any[]>([]);
   const [editingUser, setEditingUser] = useState<EditingUser | null>(null);
   const [showTrash, setShowTrash] = useState(false);
@@ -93,6 +94,7 @@ export default function DashboardPage() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchUsuarios(currentPage);
   }, [showTrash]);
 

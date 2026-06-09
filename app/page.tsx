@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import LandingNavbar from "@/app/(landing)/_components/Navbar";
 import LandingFooter from "@/app/(landing)/_components/Footer";
 import { Button } from "@/components/ui/button";
@@ -288,21 +289,21 @@ function BlogPreviewSection() {
                   </Badge>
                   <h3 className="text-[15px] font-medium text-white/90 leading-snug">{post.title}</h3>
                   <p className="text-[13px] text-white/45 leading-relaxed line-clamp-2">{post.excerpt}</p>
-                  <a
+                  <Link
                     href={`/blog/${post.slug}`}
                     className="text-[13px] text-indigo-400/80 hover:text-indigo-300 transition-colors"
                   >
                     Leer más →
-                  </a>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
           ))}
         </div>
         <div className="text-center">
-          <a href="/blog" className="text-[14px] text-indigo-400/80 hover:text-indigo-300 transition-colors">
+          <Link href="/blog" className="text-[14px] text-indigo-400/80 hover:text-indigo-300 transition-colors">
             Ver todos los posts →
-          </a>
+          </Link>
         </div>
       </div>
     </section>

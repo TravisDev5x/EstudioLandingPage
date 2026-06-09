@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Image as ImageIcon } from "lucide-react";
 
@@ -56,12 +57,12 @@ export default async function BlogPostPage({ params }: Props) {
         </div>
 
         <div className="mt-12 pt-8 border-t border-white/[0.07]">
-          <a
+          <Link
             href="/blog"
             className="text-[14px] text-indigo-400/80 hover:text-indigo-300 transition-colors"
           >
             ← Volver al blog
-          </a>
+          </Link>
         </div>
       </article>
     </main>

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 import prisma from '../../../lib/prisma';
 
 export const runtime = 'nodejs'
@@ -13,7 +14,7 @@ export async function GET(request: Request) {
     const limit = Math.max(1, Number(searchParams.get('limit')) || 5);
     const search = (searchParams.get('search') || '').trim();
 
-    const where: any = trash ? { deletedAt: { not: null } } : { deletedAt: null };
+    const where: Prisma.UserWhereInput = trash ? { deletedAt: { not: null } } : { deletedAt: null };
     if (search !== '') {
       where.OR = [
         { nombre: { contains: search } },
