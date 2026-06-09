@@ -9,8 +9,26 @@ const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 const dmSans = DM_Sans({ subsets: ["latin"], weight: ["300", "400", "500"] });
 
 export const metadata: Metadata = {
-  title: "Registro de Usuarios",
-  description: "Gestión de usuarios con Next.js y Prisma",
+  title: {
+    default: "STUDIO — Donde nacen las ideas",
+    template: "%s | STUDIO",
+  },
+  description: "Estudio de grabación, producción musical y clases en Ecatepec, Estado de México.",
+  keywords: ["estudio de grabación", "producción musical", "clases de música", "Ecatepec", "trance", "techno"],
+  authors: [{ name: "STUDIO" }],
+  openGraph: {
+    title: "STUDIO — Donde nacen las ideas",
+    description: "Estudio de grabación, producción musical y clases en Ecatepec, Estado de México.",
+    url: "https://estudio-landing-page-7cox-eqo8odtge.vercel.app",
+    siteName: "STUDIO",
+    locale: "es_MX",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "STUDIO — Donde nacen las ideas",
+    description: "Estudio de grabación, producción musical y clases en Ecatepec, Estado de México.",
+  },
 };
 
 export default function RootLayout({

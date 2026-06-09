@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { Badge } from "@/components/ui/badge";
 import { Image as ImageIcon } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Blog — Recursos para Productores",
+  description: "Artículos, tutoriales y recursos sobre producción musical, síntesis, mezcla y equipo de estudio.",
+};
 
 const posts = [
   { slug: "sintesis-primer-set", category: "Producción", title: "Cómo armar tu primer set de síntesis", excerpt: "Guía paso a paso para productores que comienzan en el mundo del synthesis analógico y virtual." },
