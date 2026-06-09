@@ -1,4 +1,4 @@
-import { Chip } from "@heroui/react";
+import { Badge } from "@/components/ui/badge";
 import { Image as ImageIcon } from "lucide-react";
 
 const posts = [
@@ -35,9 +35,9 @@ export default function BlogPage() {
                 <ImageIcon size={22} className="text-white/20" />
               </div>
               <div className="p-5 flex flex-col gap-3">
-                <Chip size="sm" variant="soft" className="self-start text-indigo-300 bg-indigo-500/[0.12]">
+                <Badge variant="secondary" className="self-start bg-indigo-500/[0.12] text-indigo-300 border-transparent">
                   {post.category}
-                </Chip>
+                </Badge>
                 <h2 className="text-[15px] font-medium text-white/90 leading-snug group-hover:text-white transition-colors">
                   {post.title}
                 </h2>

@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@heroui/react";
+import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 
 const navLinks = [
@@ -31,7 +31,7 @@ export default function LandingNavbar() {
         ))}
       </div>
 
-      <Button variant="primary" size="sm" className="flex items-center gap-1.5">
+      <Button size="sm" className="flex items-center gap-1.5">
         <Calendar size={14} />
         Reservar sesión
       </Button>

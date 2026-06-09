@@ -1,4 +1,4 @@
-import { Chip } from "@heroui/react";
+import { Badge } from "@/components/ui/badge";
 import { Image as ImageIcon } from "lucide-react";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -10,9 +10,9 @@ export default async function BlogPostPage({ params }: Props) {
     <main className="min-h-screen bg-[#0a0e1a] text-white pt-28 pb-[120px] px-6">
       <article className="max-w-[720px] mx-auto">
         <div className="mb-8">
-          <Chip size="sm" variant="soft" className="mb-4 text-indigo-300 bg-indigo-500/[0.12]">
+          <Badge variant="secondary" className="mb-4 bg-indigo-500/[0.12] text-indigo-300 border-transparent">
             Producción
-          </Chip>
+          </Badge>
           <h1 className="font-medium text-[clamp(28px,4vw,42px)] text-white/90 leading-tight mb-4">
             Título del artículo placeholder
           </h1>
