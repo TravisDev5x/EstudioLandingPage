@@ -3,8 +3,10 @@ import nodemailer from "nodemailer"
 const transporter = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
   port: Number(process.env.MAIL_PORT),
-  secure: false,
-  ignoreTLS: true,
+  secure: Number(process.env.MAIL_PORT) === 465,
+  ...(process.env.MAIL_USER
+    ? { auth: { user: process.env.MAIL_USER, pass: process.env.MAIL_PASS } }
+    : { ignoreTLS: true }),
 })
 
 function verificationTemplate(url: string, email: string): string {
