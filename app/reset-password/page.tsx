@@ -53,37 +53,19 @@ function ResetPasswordContent() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0a0e1a] flex items-center justify-center p-8">
-      <div
-        style={{
-          position: "fixed", top: -100, left: -100, width: 320, height: 320,
-          borderRadius: "50%", background: "#4f46e5", filter: "blur(80px)",
-          opacity: 0.18, pointerEvents: "none", zIndex: 0,
-        }}
-      />
-      <div
-        style={{
-          position: "fixed", bottom: -80, right: -80, width: 260, height: 260,
-          borderRadius: "50%", background: "#0ea5e9", filter: "blur(80px)",
-          opacity: 0.18, pointerEvents: "none", zIndex: 0,
-        }}
-      />
-      <div
-        style={{
-          position: "fixed", top: "40%", right: "15%", width: 200, height: 200,
-          borderRadius: "50%", background: "#7c3aed", filter: "blur(80px)",
-          opacity: 0.18, pointerEvents: "none", zIndex: 0,
-        }}
-      />
+    <main className="min-h-screen bg-background flex items-center justify-center p-8">
+      <div className="fixed -top-[100px] -left-[100px] w-[320px] h-[320px] rounded-full bg-primary/20 blur-[80px] pointer-events-none z-0" />
+      <div className="fixed -bottom-[80px] -right-[80px] w-[260px] h-[260px] rounded-full bg-secondary blur-[80px] pointer-events-none z-0" />
+      <div className="fixed top-[40%] right-[15%] w-[200px] h-[200px] rounded-full bg-primary/20 blur-[80px] pointer-events-none z-0" />
 
-      <Card className="w-full max-w-[400px] relative z-10 py-0 gap-0 ring-0 border-white/10 bg-white/5 shadow-none">
+      <Card className="w-full max-w-[400px] relative z-10 py-0 gap-0 shadow-none">
         <CardContent className="p-10">
           {done ? (
             <div className="flex flex-col items-center text-center gap-4">
-              <CheckCircle2 size={48} className="text-green-400" />
+              <CheckCircle2 size={48} className="text-primary" />
               <div>
-                <h1 className="text-[22px] font-medium text-white/90 mb-1">¡Contraseña actualizada!</h1>
-                <p className="text-[13px] text-white/40">
+                <h1 className="text-[22px] font-medium text-foreground mb-1">¡Contraseña actualizada!</h1>
+                <p className="text-[13px] text-muted-foreground">
                   Ya puedes iniciar sesión con tu nueva contraseña.
                 </p>
               </div>
@@ -94,25 +76,25 @@ function ResetPasswordContent() {
           ) : (
             <>
               <div className="flex justify-center mb-6">
-                <div className="w-16 h-16 rounded-2xl bg-indigo-500/20 flex items-center justify-center">
-                  <KeyRound size={32} className="text-indigo-400" />
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
+                  <KeyRound size={32} className="text-primary" />
                 </div>
               </div>
 
               <div className="text-center mb-8">
-                <h1 className="text-[22px] font-medium text-white/90 mb-1">Nueva contraseña</h1>
-                <p className="text-[13px] text-white/40">Ingresa tu nueva contraseña</p>
+                <h1 className="text-[22px] font-medium text-foreground mb-1">Nueva contraseña</h1>
+                <p className="text-[13px] text-muted-foreground">Ingresa tu nueva contraseña</p>
               </div>
 
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <div className="flex flex-col gap-1.5">
-                  <Label htmlFor="new-password" className="text-white/60">Nueva contraseña</Label>
+                  <Label htmlFor="new-password" className="text-muted-foreground">Nueva contraseña</Label>
                   <div className="relative flex items-center">
-                    <Lock size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none z-10" />
+                    <Lock size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none z-10" />
                     <Input
                       id="new-password"
                       type={showPass ? "text" : "password"}
-                      className="pl-9 pr-10 bg-white/5 border-white/10"
+                      className="pl-9 pr-10 bg-input/30 border-input"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
@@ -120,7 +102,7 @@ function ResetPasswordContent() {
                     <button
                       type="button"
                       onClick={() => setShowPass(!showPass)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors z-10"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors z-10"
                       tabIndex={-1}
                       aria-label={showPass ? "Ocultar" : "Mostrar"}
                     >
@@ -131,13 +113,13 @@ function ResetPasswordContent() {
 
                 <div className="flex flex-col gap-1">
                   <div className="flex flex-col gap-1.5">
-                    <Label htmlFor="confirm-password" className="text-white/60">Confirmar contraseña</Label>
+                    <Label htmlFor="confirm-password" className="text-muted-foreground">Confirmar contraseña</Label>
                     <div className="relative flex items-center">
-                      <Lock size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none z-10" />
+                      <Lock size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none z-10" />
                       <Input
                         id="confirm-password"
                         type={showConfirm ? "text" : "password"}
-                        className="pl-9 pr-10 bg-white/5 border-white/10"
+                        className="pl-9 pr-10 bg-input/30 border-input"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
@@ -145,7 +127,7 @@ function ResetPasswordContent() {
                       <button
                         type="button"
                         onClick={() => setShowConfirm(!showConfirm)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors z-10"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors z-10"
                         tabIndex={-1}
                         aria-label={showConfirm ? "Ocultar" : "Mostrar"}
                       >
@@ -154,13 +136,13 @@ function ResetPasswordContent() {
                     </div>
                   </div>
                   {mismatch && (
-                    <p className="text-[12px] text-red-400 mt-0.5">Las contraseñas no coinciden</p>
+                    <p className="text-[12px] text-destructive mt-0.5">Las contraseñas no coinciden</p>
                   )}
                 </div>
 
                 <Button
                   type="submit"
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white mt-2"
+                  className="w-full mt-2"
                   disabled={!canSubmit}
                 >
                   {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Guardar nueva contraseña"}

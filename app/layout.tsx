@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans, Geist } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
@@ -37,9 +38,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={cn("dark", "h-full", "antialiased", dmSans.className, "font-sans", geist.variable)}>
+    <html lang="es" className={cn("h-full", "antialiased", dmSans.className, "font-sans", geist.variable)} suppressHydrationWarning>
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <Providers>{children}</Providers>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <Providers>{children}</Providers>
+        </ThemeProvider>
       </body>
     </html>
   );

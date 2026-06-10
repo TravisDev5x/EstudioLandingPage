@@ -82,52 +82,34 @@ function LoginContent() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0a0e1a] flex items-center justify-center p-8">
-      <div
-        style={{
-          position: "fixed", top: -100, left: -100, width: 320, height: 320,
-          borderRadius: "50%", background: "#4f46e5", filter: "blur(80px)",
-          opacity: 0.18, pointerEvents: "none", zIndex: 0,
-        }}
-      />
-      <div
-        style={{
-          position: "fixed", bottom: -80, right: -80, width: 260, height: 260,
-          borderRadius: "50%", background: "#0ea5e9", filter: "blur(80px)",
-          opacity: 0.18, pointerEvents: "none", zIndex: 0,
-        }}
-      />
-      <div
-        style={{
-          position: "fixed", top: "40%", right: "15%", width: 200, height: 200,
-          borderRadius: "50%", background: "#7c3aed", filter: "blur(80px)",
-          opacity: 0.18, pointerEvents: "none", zIndex: 0,
-        }}
-      />
+    <main className="min-h-screen bg-background flex items-center justify-center p-8">
+      <div className="fixed -top-[100px] -left-[100px] w-[320px] h-[320px] rounded-full bg-primary/20 blur-[80px] pointer-events-none z-0" />
+      <div className="fixed -bottom-[80px] -right-[80px] w-[260px] h-[260px] rounded-full bg-secondary blur-[80px] pointer-events-none z-0" />
+      <div className="fixed top-[40%] right-[15%] w-[200px] h-[200px] rounded-full bg-primary/20 blur-[80px] pointer-events-none z-0" />
 
-      <Card className="w-full max-w-[400px] relative z-10 py-0 gap-0 ring-0 border-white/10 bg-white/5 shadow-none">
+      <Card className="w-full max-w-[400px] relative z-10 py-0 gap-0 shadow-none">
         <CardContent className="p-10">
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 rounded-2xl bg-indigo-500/15 flex items-center justify-center">
-              <Lock size={32} className="text-indigo-400" />
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <Lock size={32} className="text-primary" />
             </div>
           </div>
 
           <div className="text-center mb-8">
-            <h1 className="text-[22px] font-medium text-white/90 mb-1">Iniciar Sesión</h1>
-            <p className="text-[13px] text-white/40">Panel de administración</p>
+            <h1 className="text-[22px] font-medium text-foreground mb-1">Iniciar Sesión</h1>
+            <p className="text-[13px] text-muted-foreground">Panel de administración</p>
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="login-email" className="text-white/60">Email</Label>
+              <Label htmlFor="login-email" className="text-muted-foreground">Email</Label>
               <div className="relative flex items-center">
-                <Mail size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none z-10" />
+                <Mail size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none z-10" />
                 <Input
                   id="login-email"
                   type="email"
                   placeholder="admin@estudio.com"
-                  className="pl-9 bg-white/5 border-white/10"
+                  className="pl-9 bg-input/30 border-input"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -136,13 +118,13 @@ function LoginContent() {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="login-password" className="text-white/60">Contraseña</Label>
+              <Label htmlFor="login-password" className="text-muted-foreground">Contraseña</Label>
               <div className="relative flex items-center">
-                <Lock size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none z-10" />
+                <Lock size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none z-10" />
                 <Input
                   id="login-password"
                   type={showPassword ? "text" : "password"}
-                  className="pl-9 pr-10 bg-white/5 border-white/10"
+                  className="pl-9 pr-10 bg-input/30 border-input"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -150,7 +132,7 @@ function LoginContent() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors z-10"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors z-10"
                   tabIndex={-1}
                   aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                 >
@@ -161,7 +143,7 @@ function LoginContent() {
 
             <Button
               type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white mt-2"
+              className="w-full mt-2"
               disabled={loading}
             >
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Entrar"}
@@ -170,19 +152,19 @@ function LoginContent() {
 
           {showUnverified && (
             <div className="mt-3 flex items-center justify-center gap-2">
-              <span className="text-[12px] text-white/40">¿No recibiste el email de verificación?</span>
+              <span className="text-[12px] text-muted-foreground">¿No recibiste el email de verificación?</span>
               <Button variant="ghost" size="sm" onClick={handleResendVerify}>
                 Reenviar
               </Button>
             </div>
           )}
 
-          <div className="mt-5 border-t border-white/[0.08] pt-5">
+          <div className="mt-5 border-t border-border pt-5">
             {!showForgot ? (
               <Button
                 variant="ghost"
                 size="sm"
-                className="w-full text-white/40 gap-1.5"
+                className="w-full text-muted-foreground gap-1.5"
                 onClick={() => setShowForgot(true)}
               >
                 <KeyRound size={14} />
@@ -193,28 +175,28 @@ function LoginContent() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="self-start text-white/40 gap-1 -ml-2"
+                  className="self-start text-muted-foreground gap-1 -ml-2"
                   onClick={() => { setShowForgot(false); setForgotEmail(""); }}
                 >
                   <ChevronLeft size={14} />
                   Volver
                 </Button>
                 <div className="flex flex-col gap-1.5">
-                  <Label htmlFor="forgot-email" className="text-white/60">Tu email de acceso</Label>
+                  <Label htmlFor="forgot-email" className="text-muted-foreground">Tu email de acceso</Label>
                   <div className="relative flex items-center">
-                    <Mail size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none z-10" />
+                    <Mail size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none z-10" />
                     <Input
                       id="forgot-email"
                       type="email"
                       placeholder="admin@estudio.com"
-                      className="pl-9 bg-white/5 border-white/10"
+                      className="pl-9 bg-input/30 border-input"
                       value={forgotEmail}
                       onChange={(e) => setForgotEmail(e.target.value)}
                     />
                   </div>
                 </div>
                 <Button
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
+                  className="w-full"
                   disabled={forgotLoading || !forgotEmail}
                   onClick={handleForgotPassword}
                 >

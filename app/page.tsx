@@ -23,23 +23,23 @@ import {
 function HeroSection() {
   return (
     <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden px-6 text-center">
-      <div className="absolute -top-24 -left-24 w-[400px] h-[400px] rounded-full bg-[#4f46e5] blur-[80px] opacity-[0.15] pointer-events-none" />
-      <div className="absolute -bottom-20 -right-20 w-[350px] h-[350px] rounded-full bg-[#0ea5e9] blur-[80px] opacity-[0.15] pointer-events-none" />
-      <div className="absolute top-1/2 right-[15%] w-[250px] h-[250px] rounded-full bg-[#7c3aed] blur-[80px] opacity-[0.12] pointer-events-none" />
+      <div className="absolute -top-24 -left-24 w-[400px] h-[400px] rounded-full bg-primary/20 blur-[80px] pointer-events-none" />
+      <div className="absolute -bottom-20 -right-20 w-[350px] h-[350px] rounded-full bg-primary/20 blur-[80px] pointer-events-none" />
+      <div className="absolute top-1/2 right-[15%] w-[250px] h-[250px] rounded-full bg-primary/20 blur-[80px] pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center gap-6 max-w-2xl">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-indigo-500/25 bg-indigo-500/[0.08] text-[13px] text-indigo-300">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/10 text-[13px] text-primary">
           <Music size={12} />
           Estudio de grabación · Ecatepec
         </div>
 
         <h1 className="font-medium leading-[1.1] tracking-[-0.02em] text-[clamp(40px,8vw,80px)]">
-          <span className="text-white">Donde nacen</span>
+          <span className="text-foreground">Donde nacen</span>
           <br />
-          <span className="text-indigo-400/90">las ideas.</span>
+          <span className="text-primary">las ideas.</span>
         </h1>
 
-        <p className="text-[18px] text-white/50 max-w-[520px]">
+        <p className="text-[18px] text-muted-foreground max-w-[520px]">
           Grabación, producción musical y clases en un espacio diseñado para artistas serios.
         </p>
 
@@ -55,7 +55,7 @@ function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/30 animate-[scroll-bounce_2s_ease-in-out_infinite]">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground animate-[scroll-bounce_2s_ease-in-out_infinite]">
         <ChevronDown size={24} />
       </div>
     </section>
@@ -68,11 +68,11 @@ function AboutSection() {
     <section id="about" className="py-[120px] px-6">
       <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
         <div className="flex flex-col gap-5">
-          <p className="text-[11px] uppercase tracking-[0.15em] text-indigo-400/80">Nosotros</p>
-          <h2 className="font-medium leading-tight text-[clamp(28px,4vw,42px)] text-white/90">
+          <p className="text-[11px] uppercase tracking-[0.15em] text-primary">Nosotros</p>
+          <h2 className="font-medium leading-tight text-[clamp(28px,4vw,42px)] text-foreground">
             Un espacio para crear sin límites
           </h2>
-          <p className="text-[16px] text-white/55 leading-[1.8]">
+          <p className="text-[16px] text-muted-foreground leading-[1.8]">
             Somos un estudio independiente en Ecatepec enfocado en música electrónica, producción y
             formación de artistas. Cada proyecto recibe atención personalizada.
           </p>
@@ -85,16 +85,16 @@ function AboutSection() {
               ] as const
             ).map(([num, label]) => (
               <div key={label}>
-                <p className="text-[32px] font-medium text-white leading-none mb-1">{num}</p>
-                <p className="text-[12px] text-white/40">{label}</p>
+                <p className="text-[32px] font-medium text-foreground leading-none mb-1">{num}</p>
+                <p className="text-[12px] text-muted-foreground">{label}</p>
               </div>
             ))}
           </div>
         </div>
 
-        <Card className="py-0 gap-0 ring-0 border border-white/[0.07] bg-white/[0.03]">
+        <Card className="py-0 gap-0">
           <CardContent className="p-0 flex items-center justify-center" style={{ aspectRatio: "4/3" }}>
-            <div className="flex flex-col items-center gap-2 text-white/20">
+            <div className="flex flex-col items-center gap-2 text-muted-foreground">
               <ImageIcon size={32} />
               <span className="text-[13px]">Foto del estudio</span>
             </div>
@@ -126,11 +126,11 @@ const services = [
 
 function ServicesSection() {
   return (
-    <section id="servicios" className="py-[120px] px-6 bg-white/[0.015]">
+    <section id="servicios" className="py-[120px] px-6 bg-muted/30">
       <div className="max-w-[1100px] mx-auto">
         <div className="text-center mb-14">
-          <p className="text-[11px] uppercase tracking-[0.15em] text-indigo-400/80 mb-3">Servicios</p>
-          <h2 className="font-medium text-[clamp(28px,4vw,42px)] text-white/90">
+          <p className="text-[11px] uppercase tracking-[0.15em] text-primary mb-3">Servicios</p>
+          <h2 className="font-medium text-[clamp(28px,4vw,42px)] text-foreground">
             Todo lo que necesitas para crear
           </h2>
         </div>
@@ -138,12 +138,12 @@ function ServicesSection() {
           {services.map(({ icon: Icon, title, desc }) => (
             <Card
               key={title}
-              className="py-0 gap-0 ring-0 border border-white/[0.07] bg-white/[0.03] hover:border-indigo-500/40 hover:bg-indigo-500/[0.05] transition-all duration-200"
+              className="py-0 gap-0 hover:ring-primary/40 hover:bg-primary/5 transition-all duration-200"
             >
               <CardContent className="p-8 flex flex-col gap-4">
-                <Icon size={28} className="text-indigo-400" />
-                <h3 className="text-[17px] font-medium text-white/90">{title}</h3>
-                <p className="text-[14px] text-white/50 leading-relaxed">{desc}</p>
+                <Icon size={28} className="text-primary" />
+                <h3 className="text-[17px] font-medium text-foreground">{title}</h3>
+                <p className="text-[14px] text-muted-foreground leading-relaxed">{desc}</p>
               </CardContent>
             </Card>
           ))}
@@ -199,8 +199,8 @@ function PricingSection() {
     <section id="precios" className="py-[120px] px-6">
       <div className="max-w-[900px] mx-auto">
         <div className="text-center mb-14">
-          <p className="text-[11px] uppercase tracking-[0.15em] text-indigo-400/80 mb-3">Precios</p>
-          <h2 className="font-medium text-[clamp(28px,4vw,42px)] text-white/90">
+          <p className="text-[11px] uppercase tracking-[0.15em] text-primary mb-3">Precios</p>
+          <h2 className="font-medium text-[clamp(28px,4vw,42px)] text-foreground">
             Planes simples y transparentes
           </h2>
         </div>
@@ -208,26 +208,24 @@ function PricingSection() {
           {pricingPlans.map((plan) => (
             <Card
               key={plan.name}
-              className={`py-0 gap-0 ring-0 border transition-all duration-200 ${
-                plan.highlight
-                  ? "border-indigo-500/50 bg-indigo-500/[0.08]"
-                  : "border-white/[0.07] bg-white/[0.03]"
+              className={`py-0 gap-0 transition-all duration-200 ${
+                plan.highlight ? "ring-2 ring-primary" : ""
               }`}
             >
               <CardContent className="p-6 flex flex-col gap-5">
                 {plan.highlight && (
-                  <Badge variant="secondary" className="self-start bg-indigo-500/20 text-indigo-300 border-transparent">
+                  <Badge variant="secondary" className="self-start bg-primary/20 text-primary border-transparent">
                     Popular
                   </Badge>
                 )}
                 <div>
-                  <h3 className="text-[17px] font-medium text-white/90 mb-1">{plan.name}</h3>
-                  <p className="text-[22px] font-medium text-white">{plan.price}</p>
+                  <h3 className="text-[17px] font-medium text-foreground mb-1">{plan.name}</h3>
+                  <p className="text-[22px] font-medium text-foreground">{plan.price}</p>
                 </div>
                 <ul className="flex flex-col gap-2 flex-1">
                   {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-[14px] text-white/60">
-                      <CheckCircle2 size={14} className="text-green-400 shrink-0" />
+                    <li key={f} className="flex items-center gap-2 text-[14px] text-muted-foreground">
+                      <CheckCircle2 size={14} className="text-primary shrink-0" />
                       {f}
                     </li>
                   ))}
@@ -268,30 +266,30 @@ const blogPosts = [
 
 function BlogPreviewSection() {
   return (
-    <section id="blog" className="py-[120px] px-6 bg-white/[0.015]">
+    <section id="blog" className="py-[120px] px-6 bg-muted/30">
       <div className="max-w-[1100px] mx-auto">
         <div className="text-center mb-14">
-          <p className="text-[11px] uppercase tracking-[0.15em] text-indigo-400/80 mb-3">Blog</p>
-          <h2 className="font-medium text-[clamp(28px,4vw,42px)] text-white/90">
+          <p className="text-[11px] uppercase tracking-[0.15em] text-primary mb-3">Blog</p>
+          <h2 className="font-medium text-[clamp(28px,4vw,42px)] text-foreground">
             Recursos para productores
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {blogPosts.map((post) => (
-            <Card key={post.slug} className="py-0 gap-0 ring-0 border border-white/[0.07] bg-white/[0.03] overflow-hidden">
+            <Card key={post.slug} className="py-0 gap-0 overflow-hidden">
               <CardContent className="p-0">
-                <div className="aspect-video bg-white/[0.03] border-b border-white/[0.06] flex items-center justify-center">
-                  <ImageIcon size={22} className="text-white/20" />
+                <div className="aspect-video bg-muted border-b border-border flex items-center justify-center">
+                  <ImageIcon size={22} className="text-muted-foreground" />
                 </div>
                 <div className="p-5 flex flex-col gap-3">
-                  <Badge variant="secondary" className="self-start bg-indigo-500/[0.12] text-indigo-300 border-transparent">
+                  <Badge variant="secondary" className="self-start bg-primary/10 text-primary border-transparent">
                     {post.category}
                   </Badge>
-                  <h3 className="text-[15px] font-medium text-white/90 leading-snug">{post.title}</h3>
-                  <p className="text-[13px] text-white/45 leading-relaxed line-clamp-2">{post.excerpt}</p>
+                  <h3 className="text-[15px] font-medium text-foreground leading-snug">{post.title}</h3>
+                  <p className="text-[13px] text-muted-foreground leading-relaxed line-clamp-2">{post.excerpt}</p>
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="text-[13px] text-indigo-400/80 hover:text-indigo-300 transition-colors"
+                    className="text-[13px] text-primary hover:text-primary/70 transition-colors"
                   >
                     Leer más →
                   </Link>
@@ -301,7 +299,7 @@ function BlogPreviewSection() {
           ))}
         </div>
         <div className="text-center">
-          <Link href="/blog" className="text-[14px] text-indigo-400/80 hover:text-indigo-300 transition-colors">
+          <Link href="/blog" className="text-[14px] text-primary hover:text-primary/70 transition-colors">
             Ver todos los posts →
           </Link>
         </div>
@@ -316,8 +314,8 @@ function ContactSection() {
     <section id="contacto" className="py-[120px] px-6">
       <div className="max-w-[900px] mx-auto">
         <div className="text-center mb-14">
-          <p className="text-[11px] uppercase tracking-[0.15em] text-indigo-400/80 mb-3">Contacto</p>
-          <h2 className="font-medium text-[clamp(28px,4vw,42px)] text-white/90">
+          <p className="text-[11px] uppercase tracking-[0.15em] text-primary mb-3">Contacto</p>
+          <h2 className="font-medium text-[clamp(28px,4vw,42px)] text-foreground">
             Hablemos de tu proyecto
           </h2>
         </div>
@@ -330,20 +328,20 @@ function ContactSection() {
                 { Icon: Phone, text: "+52 55 XXXX XXXX" },
               ] as const
             ).map(({ Icon, text }) => (
-              <div key={text} className="flex items-center gap-3 text-[15px] text-white/60">
-                <Icon size={16} className="text-indigo-400/70 shrink-0" />
+              <div key={text} className="flex items-center gap-3 text-[15px] text-muted-foreground">
+                <Icon size={16} className="text-primary/70 shrink-0" />
                 {text}
               </div>
             ))}
             <div className="flex items-center gap-3 mt-2">
               <button
-                className="p-2 rounded-lg border border-white/[0.07] text-white/40 hover:text-white/70 hover:border-white/20 transition-colors"
+                className="p-2 rounded-lg border border-border text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Instagram"
               >
                 <Music size={16} />
               </button>
               <button
-                className="p-2 rounded-lg border border-white/[0.07] text-white/40 hover:text-white/70 hover:border-white/20 transition-colors"
+                className="p-2 rounded-lg border border-border text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="SoundCloud"
               >
                 <Music size={16} />
@@ -353,27 +351,27 @@ function ContactSection() {
 
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <label className="text-[13px] text-white/60">Nombre</label>
+              <label className="text-[13px] text-muted-foreground">Nombre</label>
               <input
                 type="text"
                 placeholder="Tu nombre"
-                className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2.5 text-[14px] text-white/90 placeholder:text-white/25 outline-none focus:border-indigo-500/50 transition-colors"
+                className="w-full rounded-lg bg-input/30 border border-input px-3 py-2.5 text-[14px] text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors"
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="text-[13px] text-white/60">Email</label>
+              <label className="text-[13px] text-muted-foreground">Email</label>
               <input
                 type="email"
                 placeholder="tu@email.com"
-                className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2.5 text-[14px] text-white/90 placeholder:text-white/25 outline-none focus:border-indigo-500/50 transition-colors"
+                className="w-full rounded-lg bg-input/30 border border-input px-3 py-2.5 text-[14px] text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors"
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="text-[13px] text-white/60">Mensaje</label>
+              <label className="text-[13px] text-muted-foreground">Mensaje</label>
               <textarea
                 rows={4}
                 placeholder="Cuéntanos sobre tu proyecto..."
-                className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2.5 text-[14px] text-white/90 placeholder:text-white/25 outline-none focus:border-indigo-500/50 transition-colors resize-none"
+                className="w-full rounded-lg bg-input/30 border border-input px-3 py-2.5 text-[14px] text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors resize-none"
               />
             </div>
             <Button className="w-full mt-1">
@@ -389,7 +387,7 @@ function ContactSection() {
 // ── Page ──────────────────────────────────────────────────────────
 export default function LandingPage() {
   return (
-    <div className="bg-[#0a0e1a] text-white overflow-x-hidden">
+    <div className="bg-background text-foreground overflow-x-hidden">
       <LandingNavbar />
       <HeroSection />
       <AboutSection />

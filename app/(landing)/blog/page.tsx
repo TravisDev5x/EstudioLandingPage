@@ -18,14 +18,14 @@ const posts = [
 
 export default function BlogPage() {
   return (
-    <main className="min-h-screen bg-[#0a0e1a] text-white pt-28 pb-[120px] px-6">
+    <main className="min-h-screen bg-background text-foreground pt-28 pb-[120px] px-6">
       <div className="max-w-[1100px] mx-auto">
         <div className="text-center mb-14">
-          <p className="text-[11px] uppercase tracking-[0.15em] text-indigo-400/80 mb-3">Blog</p>
-          <h1 className="font-medium text-[clamp(28px,4vw,48px)] text-white/90 mb-3">
+          <p className="text-[11px] uppercase tracking-[0.15em] text-primary mb-3">Blog</p>
+          <h1 className="font-medium text-[clamp(28px,4vw,48px)] text-foreground mb-3">
             Recursos para productores
           </h1>
-          <p className="text-[16px] text-white/45 max-w-md mx-auto">
+          <p className="text-[16px] text-muted-foreground max-w-md mx-auto">
             Tutoriales, técnicas y análisis de equipo para artistas independientes.
           </p>
         </div>
@@ -35,20 +35,20 @@ export default function BlogPage() {
             <a
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group block border border-white/[0.07] bg-white/[0.03] rounded-xl overflow-hidden hover:border-indigo-500/30 hover:bg-indigo-500/[0.03] transition-all duration-200"
+              className="group block border border-border bg-card rounded-xl overflow-hidden hover:border-primary/30 hover:bg-primary/5 transition-all duration-200"
             >
-              <div className="aspect-video bg-white/[0.03] border-b border-white/[0.06] flex items-center justify-center">
-                <ImageIcon size={22} className="text-white/20" />
+              <div className="aspect-video bg-muted border-b border-border flex items-center justify-center">
+                <ImageIcon size={22} className="text-muted-foreground" />
               </div>
               <div className="p-5 flex flex-col gap-3">
-                <Badge variant="secondary" className="self-start bg-indigo-500/[0.12] text-indigo-300 border-transparent">
+                <Badge variant="secondary" className="self-start bg-primary/10 text-primary border-transparent">
                   {post.category}
                 </Badge>
-                <h2 className="text-[15px] font-medium text-white/90 leading-snug group-hover:text-white transition-colors">
+                <h2 className="text-[15px] font-medium text-foreground leading-snug group-hover:text-foreground transition-colors">
                   {post.title}
                 </h2>
-                <p className="text-[13px] text-white/45 leading-relaxed line-clamp-2">{post.excerpt}</p>
-                <span className="text-[13px] text-indigo-400/80 group-hover:text-indigo-300 transition-colors">
+                <p className="text-[13px] text-muted-foreground leading-relaxed line-clamp-2">{post.excerpt}</p>
+                <span className="text-[13px] text-primary group-hover:text-primary/70 transition-colors">
                   Leer más →
                 </span>
               </div>

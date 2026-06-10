@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
+import { ModeToggle } from "@/components/dashboard/ModeToggle"
 
 const PAGE_TITLES: Record<string, string> = {
   "/dashboard": "Inicio",
@@ -19,6 +20,9 @@ export function DashboardHeader() {
       <SidebarTrigger />
       <Separator orientation="vertical" className="h-4" />
       <h1 className="text-sm font-medium">{title}</h1>
+      <div className="ml-auto">
+        <ModeToggle />
+      </div>
     </header>
   )
 }
