@@ -24,7 +24,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
     });
 
     return NextResponse.json(usuarioActualizado);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Error al actualizar el usuario" }, { status: 500 });
   }
 }
@@ -40,7 +40,7 @@ export async function DELETE(request: Request, { params }: RouteContext) {
     });
 
     return NextResponse.json(usuarioEliminado);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Error al eliminar el usuario" }, { status: 500 });
   }
 }
@@ -56,7 +56,7 @@ export async function PATCH(request: Request, { params }: RouteContext) {
     });
 
     return NextResponse.json(usuarioRestaurado);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Error al restaurar el usuario" }, { status: 500 });
   }
 }

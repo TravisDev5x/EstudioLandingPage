@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 
@@ -31,10 +32,15 @@ export default function LandingNavbar() {
         ))}
       </div>
 
-      <Button size="sm" className="flex items-center gap-1.5">
-        <Calendar size={14} />
-        Reservar sesión
-      </Button>
+      <div className="flex items-center gap-2">
+        <Button size="sm" variant="outline" nativeButton={false} render={<Link href="/login" />}>
+          Iniciar sesión
+        </Button>
+        <Button size="sm" className="flex items-center gap-1.5">
+          <Calendar size={14} />
+          Reservar sesión
+        </Button>
+      </div>
     </nav>
   );
 }

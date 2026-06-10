@@ -12,6 +12,15 @@ export const createUserSchema = z.object({
 
 export const updateUserSchema = createUserSchema.partial()
 
+export const createRoleSchema = z.object({
+  nombre: z.string().min(2, "Mínimo 2 caracteres").max(100),
+  descripcion: z.string().max(255).optional(),
+})
+
+export const updateRoleSchema = createRoleSchema.partial()
+
 export type LoginInput = z.infer<typeof loginSchema>
 export type CreateUserInput = z.infer<typeof createUserSchema>
 export type UpdateUserInput = z.infer<typeof updateUserSchema>
+export type CreateRoleInput = z.infer<typeof createRoleSchema>
+export type UpdateRoleInput = z.infer<typeof updateRoleSchema>

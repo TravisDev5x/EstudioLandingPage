@@ -1,7 +1,5 @@
-import NextAuth from "next-auth"
-import { authConfig } from "@/lib/auth.config"
-
-const { auth } = NextAuth(authConfig)
+import { NextResponse } from "next/server"
+import { auth } from "@/lib/auth"
 
 const PUBLIC_PATHS = ["/login", "/reset-password", "/verify-email", "/blog"]
 
@@ -14,11 +12,11 @@ export const proxy = auth((req) => {
     pathname.startsWith("/api/auth")
 
   if (!isLoggedIn && !isPublic) {
-    return Response.redirect(new URL("/login", req.nextUrl.origin))
+    return NextResponse.redirect(new URL("/login", req.nextUrl.origin))
   }
 
   if (isLoggedIn && pathname === "/login") {
-    return Response.redirect(new URL("/dashboard", req.nextUrl.origin))
+    return NextResponse.redirect(new URL("/dashboard", req.nextUrl.origin))
   }
 })
 
