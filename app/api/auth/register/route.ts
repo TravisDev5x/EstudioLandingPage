@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 
   const { name, email, password } = parsed.data
 
-  const existing = await prisma.adminUser.findUnique({ where: { email } })
+  const existing = await prisma.user.findUnique({ where: { email } })
   if (existing) {
     return NextResponse.json({ error: "Este email ya está registrado" }, { status: 409 })
   }
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 
   const hashed = await bcrypt.hash(password, 10)
 
-  await prisma.adminUser.create({
+  await prisma.user.create({
     data: {
       name,
       email,

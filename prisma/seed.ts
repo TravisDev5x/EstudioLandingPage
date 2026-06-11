@@ -9,7 +9,7 @@ const prisma = new PrismaClient({ adapter })
 async function main() {
   const hashed = await bcrypt.hash("admin123", 10)
 
-  await prisma.adminUser.upsert({
+  await prisma.user.upsert({
     where: { email: "admin@estudio.com" },
     update: {},
     create: {

@@ -17,7 +17,7 @@ export async function POST(request: Request) {
   const { email } = parsed.data
 
   try {
-    const user = await prisma.adminUser.findUnique({ where: { email } })
+    const user = await prisma.user.findUnique({ where: { email } })
     if (user && user.emailVerified) {
       const token = await generateResetToken(email)
       await sendPasswordResetEmail(email, token, user.name)

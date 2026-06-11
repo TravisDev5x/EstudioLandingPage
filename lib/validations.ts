@@ -16,7 +16,7 @@ export const registerSchema = z.object({
 })
 
 export const createUserSchema = z.object({
-  nombre: z.string().min(2, "Mínimo 2 caracteres").max(100),
+  name: z.string().min(2, "Mínimo 2 caracteres").max(100),
   email: z.string().email("Email inválido"),
 })
 

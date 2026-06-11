@@ -18,7 +18,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
     const usuarioActualizado = await prisma.user.update({
       where: { id: Number(id) },
       data: {
-        nombre: parsed.data.nombre,
+        name: parsed.data.name,
         email: parsed.data.email,
       },
     });

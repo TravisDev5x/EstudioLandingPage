@@ -39,7 +39,7 @@ export async function DELETE(request: Request, { params }: RouteContext) {
     const { id } = await params;
     const roleId = Number(id);
 
-    const usuariosAsignados = await prisma.adminUser.count({ where: { roleId } });
+    const usuariosAsignados = await prisma.user.count({ where: { roleId, deletedAt: null } });
     if (usuariosAsignados > 0) {
       return NextResponse.json(
         { error: "No se puede eliminar el rol porque tiene usuarios asignados" },

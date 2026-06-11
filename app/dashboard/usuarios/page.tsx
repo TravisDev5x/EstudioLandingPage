@@ -30,8 +30,8 @@ import {
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
-type EditingUser = { id: number; nombre: string; email: string };
-type ConfirmDelete = { id: number; nombre: string } | null;
+type EditingUser = { id: number; name: string; email: string };
+type ConfirmDelete = { id: number; name: string } | null;
 
 const LIMIT = 5;
 
@@ -46,7 +46,7 @@ const getPageNumbers = (current: number, total: number): (number | "ellipsis")[]
 };
 
 export default function UsuariosPage() {
-  const [nombre, setNombre] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [usuarios, setUsuarios] = useState<any[]>([]);
@@ -106,10 +106,10 @@ export default function UsuariosPage() {
       const res = await fetch("/api/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre, email }),
+        body: JSON.stringify({ name, email }),
       });
       if (!res.ok) throw new Error();
-      setNombre("");
+      setName("");
       setEmail("");
       fetchUsuarios(currentPage);
       toast.success("Usuario creado correctamente");
@@ -141,7 +141,7 @@ export default function UsuariosPage() {
       const res = await fetch(`/api/users/${editingUser.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre: editingUser.nombre, email: editingUser.email }),
+        body: JSON.stringify({ name: editingUser.name, email: editingUser.email }),
       });
       if (!res.ok) throw new Error();
       setEditingUser(null);
@@ -166,13 +166,13 @@ export default function UsuariosPage() {
           {/* Formulario */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="nombre" className="text-white/60">Nombre</Label>
+              <Label htmlFor="name" className="text-white/60">Nombre</Label>
               <Input
-                id="nombre"
+                id="name"
                 placeholder="Ej. Juan Pérez"
                 className="bg-white/5 border-white/10"
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 required
               />
             </div>
@@ -260,7 +260,7 @@ export default function UsuariosPage() {
             ) : (
               <div className="flex flex-col gap-2">
                 {usuarios.map((user) => {
-                  const initials = user.nombre
+                  const initials = user.name
                     .split(" ")
                     .map((w: string) => w[0])
                     .join("")
@@ -273,7 +273,7 @@ export default function UsuariosPage() {
                           <AvatarFallback className="text-indigo-300 text-xs bg-transparent">{initials}</AvatarFallback>
                         </Avatar>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium truncate text-white/85">{user.nombre}</p>
+                          <p className="text-sm font-medium truncate text-white/85">{user.name}</p>
                           <p className="text-xs truncate text-white/35">{user.email}</p>
                         </div>
                         <Badge variant="secondary" className="bg-white/[0.06] text-white/40 border-transparent text-[11px] shrink-0">
@@ -284,7 +284,7 @@ export default function UsuariosPage() {
                             <Tooltip>
                               <TooltipTrigger
                                 onClick={() =>
-                                  setEditingUser({ id: user.id, nombre: user.nombre, email: user.email })
+                                  setEditingUser({ id: user.id, name: user.name, email: user.email })
                                 }
                                 className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }))}
                               >
@@ -296,7 +296,7 @@ export default function UsuariosPage() {
                           {!showTrash ? (
                             <Tooltip>
                               <TooltipTrigger
-                                onClick={() => setConfirmDelete({ id: user.id, nombre: user.nombre })}
+                                onClick={() => setConfirmDelete({ id: user.id, name: user.name })}
                                 className={cn(
                                   buttonVariants({ variant: "ghost", size: "icon-sm" }),
                                   "hover:text-red-400 hover:bg-red-500/[0.08]"
@@ -373,12 +373,12 @@ export default function UsuariosPage() {
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="edit-nombre">Nombre</Label>
+              <Label htmlFor="edit-name">Nombre</Label>
               <Input
-                id="edit-nombre"
-                value={editingUser?.nombre || ""}
+                id="edit-name"
+                value={editingUser?.name || ""}
                 onChange={(e) =>
-                  setEditingUser((u) => (u ? { ...u, nombre: e.target.value } : null))
+                  setEditingUser((u) => (u ? { ...u, name: e.target.value } : null))
                 }
               />
             </div>
@@ -409,7 +409,7 @@ export default function UsuariosPage() {
           <AlertDialogHeader>
             <AlertDialogTitle className="text-center">¿Eliminar usuario?</AlertDialogTitle>
             <AlertDialogDescription className="text-center">
-              Se moverá &quot;{confirmDelete?.nombre}&quot; a la papelera. Esta acción se puede deshacer.
+              Se moverá &quot;{confirmDelete?.name}&quot; a la papelera. Esta acción se puede deshacer.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <div className="flex justify-center gap-2 pt-2">

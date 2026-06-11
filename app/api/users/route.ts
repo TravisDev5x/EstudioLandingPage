@@ -17,7 +17,7 @@ export async function GET(request: Request) {
     const where: Prisma.UserWhereInput = trash ? { deletedAt: { not: null } } : { deletedAt: null };
     if (search !== '') {
       where.OR = [
-        { nombre: { contains: search } },
+        { name: { contains: search } },
         { email: { contains: search } },
       ];
     }
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
 
     const nuevoUsuario = await prisma.user.create({
       data: {
-        nombre: parsed.data.nombre,
+        name: parsed.data.name,
         email: parsed.data.email,
       },
     });

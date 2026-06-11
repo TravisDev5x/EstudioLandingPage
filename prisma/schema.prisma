@@ -7,19 +7,10 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  nombre    String
-  email     String    @unique
-  creadoEn  DateTime  @default(now())
-  deletedAt DateTime?
-}
-
-model AdminUser {
   id             Int       @id @default(autoincrement())
-  email          String    @unique
-  password       String
   name           String
-  createdAt      DateTime  @default(now())
+  email          String    @unique
+  password       String?
   emailVerified  Boolean   @default(false)
   verifyToken    String?   @unique
   verifyTokenExp DateTime?
@@ -27,12 +18,14 @@ model AdminUser {
   resetTokenExp  DateTime?
   roleId         Int?
   role           Role?     @relation(fields: [roleId], references: [id])
+  createdAt      DateTime  @default(now())
+  deletedAt      DateTime?
 }
 
 model Role {
-  id          Int         @id @default(autoincrement())
-  nombre      String      @unique
+  id          Int      @id @default(autoincrement())
+  nombre      String   @unique
   descripcion String?
-  creadoEn    DateTime    @default(now())
-  adminUsers  AdminUser[]
+  creadoEn    DateTime @default(now())
+  users       User[]
 }

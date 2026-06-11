@@ -8,7 +8,7 @@ export const authConfig = {
     async jwt({ token, user }) {
       if (user) token.id = user.id
       if (token.email) {
-        const dbUser = await prisma.adminUser.findUnique({
+        const dbUser = await prisma.user.findUnique({
           where: { email: token.email },
           include: { role: true },
         })
