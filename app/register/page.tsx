@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
+import { GoogleButton } from "@/components/auth/GoogleButton";
 import { toast } from "sonner";
 import { UserPlus, User, Mail, Lock, Eye, EyeOff, ChevronLeft, Loader2 } from "lucide-react";
 
@@ -82,6 +83,14 @@ export default function RegisterPage() {
           <div className="text-center mb-8">
             <h1 className="text-[22px] font-medium text-foreground mb-1">Crear cuenta</h1>
             <p className="text-[13px] text-muted-foreground">Regístrate como cliente del estudio</p>
+          </div>
+
+          <GoogleButton />
+
+          <div className="relative flex items-center my-6">
+            <div className="flex-1 border-t border-border" />
+            <span className="px-3 text-xs text-muted-foreground">o</span>
+            <div className="flex-1 border-t border-border" />
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">

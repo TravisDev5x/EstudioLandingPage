@@ -1,5 +1,6 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
+import Google from "next-auth/providers/google"
 import { CredentialsSignin } from "next-auth"
 import bcrypt from "bcryptjs"
 import prisma from "./prisma"
@@ -31,5 +32,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return { id: String(user.id), email: user.email, name: user.name }
       },
     }),
+    Google,
   ],
 })

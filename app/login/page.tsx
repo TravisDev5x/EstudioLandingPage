@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
+import { GoogleButton } from "@/components/auth/GoogleButton";
 import { toast } from "sonner";
 import { Lock, Mail, Eye, EyeOff, KeyRound, ChevronLeft, Loader2 } from "lucide-react";
 
@@ -109,9 +110,9 @@ function LoginContent() {
             <p className="text-[13px] text-muted-foreground">Panel de administración</p>
           </div>
 
-          {/* TODO: Botón Google OAuth aquí */}
+          <GoogleButton />
 
-          <div className="relative flex items-center mb-6">
+          <div className="relative flex items-center my-6">
             <div className="flex-1 border-t border-border" />
             <span className="px-3 text-xs text-muted-foreground">o</span>
             <div className="flex-1 border-t border-border" />
