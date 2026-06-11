@@ -15,6 +15,10 @@ import { ComingSoon } from "@/components/dashboard/ComingSoon";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
+function getSieteDiasAtras() {
+  return new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+}
+
 export default async function DashboardPage() {
   const session = await auth();
 
@@ -70,7 +74,7 @@ export default async function DashboardPage() {
     );
   }
 
-  const sieteDiasAtras = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  const sieteDiasAtras = getSieteDiasAtras();
 
   const [totalUsuarios, totalRoles, usuariosActivos, usuariosPendientes, nuevosClientes, recientes] =
     await Promise.all([
