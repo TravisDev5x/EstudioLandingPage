@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 
-const PUBLIC_PATHS = ["/login", "/reset-password", "/verify-email", "/blog"]
+const PUBLIC_PATHS = ["/login", "/register", "/reset-password", "/verify-email", "/blog"]
 
 export const proxy = auth((req) => {
   const isLoggedIn = !!req.auth

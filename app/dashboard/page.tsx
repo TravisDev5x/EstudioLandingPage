@@ -1,8 +1,16 @@
 import { Users, Shield } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { ComingSoon } from "@/components/dashboard/ComingSoon";
+import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
 export default async function DashboardPage() {
+  const session = await auth();
+
+  if (session?.user?.role !== "Admin") {
+    return <ComingSoon />;
+  }
+
   const [totalUsuarios, totalRoles] = await Promise.all([
     prisma.user.count({ where: { deletedAt: null } }),
     prisma.role.count(),

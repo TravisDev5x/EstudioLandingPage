@@ -9,6 +9,8 @@ const PAGE_TITLES: Record<string, string> = {
   "/dashboard": "Inicio",
   "/dashboard/usuarios": "Usuarios",
   "/dashboard/roles": "Roles",
+  "/dashboard/proyectos": "Mis Proyectos",
+  "/dashboard/reservas": "Mis Reservas",
 }
 
 export function DashboardHeader() {

@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { signOut } from "next-auth/react"
-import { Music, Users, Shield, LogOut } from "lucide-react"
+import { Music, Users, Shield, LogOut, Home, FolderKanban, Calendar } from "lucide-react"
 import type { Session } from "next-auth"
 import {
   Sidebar,
@@ -17,14 +17,27 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 
-const navItems = [
+const adminNavItems = [
+  { title: "Inicio", url: "/dashboard", icon: Home },
   { title: "Usuarios", url: "/dashboard/usuarios", icon: Users },
   { title: "Roles", url: "/dashboard/roles", icon: Shield },
 ]
 
+const clienteNavItems = [
+  { title: "Inicio", url: "/dashboard", icon: Home },
+  { title: "Mis Proyectos", url: "/dashboard/proyectos", icon: FolderKanban },
+  { title: "Mis Reservas", url: "/dashboard/reservas", icon: Calendar },
+]
+
+const defaultNavItems = [{ title: "Inicio", url: "/dashboard", icon: Home }]
+
 export function AppSidebar({ session }: { session: Session | null }) {
   const pathname = usePathname()
   const user = session?.user
+  const role = user?.role
+
+  const navItems =
+    role === "Admin" ? adminNavItems : role === "Cliente" ? clienteNavItems : defaultNavItems
 
   const initials =
     user?.name
@@ -52,7 +65,7 @@ export function AppSidebar({ session }: { session: Session | null }) {
           {navItems.map((item) => (
             <SidebarMenuItem key={item.url}>
               <SidebarMenuButton
-                isActive={pathname.startsWith(item.url)}
+                isActive={item.url === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(item.url)}
                 render={<Link href={item.url} />}
               >
                 <item.icon />

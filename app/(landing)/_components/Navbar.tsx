@@ -66,7 +66,7 @@ export default function LandingNavbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-between px-8 lg:px-10 border-b border-border bg-background/80 backdrop-blur-md">
       <span className="font-mono text-[15px] font-semibold text-foreground tracking-tight">STUDIO</span>
 
-      <NavigationMenu className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+      <NavigationMenu className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <NavigationMenuList className="gap-7">
           {navEntries.map((entry) =>
             isDropdown(entry) ? (
@@ -108,8 +108,8 @@ export default function LandingNavbar() {
       <div className="flex items-center gap-2">
         <ModeToggle />
 
-        <div className="hidden md:flex items-center gap-2">
-          <Button size="sm" variant="outline" nativeButton={false} render={<Link href="/login" />}>
+        <div className="hidden lg:flex items-center gap-2">
+          <Button size="sm" variant="ghost" nativeButton={false} render={<Link href="/login" />}>
             Iniciar sesión
           </Button>
           <Button size="sm" className="flex items-center gap-1.5">
@@ -119,7 +119,7 @@ export default function LandingNavbar() {
         </div>
 
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden" />}>
+          <SheetTrigger render={<Button variant="ghost" size="icon" className="lg:hidden" />}>
             <Menu />
             <span className="sr-only">Abrir menú</span>
           </SheetTrigger>
@@ -177,6 +177,14 @@ export default function LandingNavbar() {
                 className="w-full"
               >
                 Iniciar sesión
+              </Button>
+              <Button
+                variant="ghost"
+                nativeButton={false}
+                render={<Link href="/register" onClick={() => setOpen(false)} />}
+                className="w-full"
+              >
+                Crear cuenta
               </Button>
               <Button className="w-full flex items-center gap-1.5" onClick={() => setOpen(false)}>
                 <Calendar size={14} />

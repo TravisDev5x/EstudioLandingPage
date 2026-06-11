@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     const user = await prisma.adminUser.findUnique({ where: { email } })
     if (user && !user.emailVerified) {
       const token = await generateVerifyToken(email)
-      await sendVerificationEmail(email, token)
+      await sendVerificationEmail(email, token, user.name)
     }
   } catch {
     // silent

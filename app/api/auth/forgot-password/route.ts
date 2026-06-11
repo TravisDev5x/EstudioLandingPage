@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     const user = await prisma.adminUser.findUnique({ where: { email } })
     if (user && user.emailVerified) {
       const token = await generateResetToken(email)
-      await sendPasswordResetEmail(email, token)
+      await sendPasswordResetEmail(email, token, user.name)
     }
   } catch {
     // silent — don't reveal errors to client

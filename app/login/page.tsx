@@ -1,5 +1,6 @@
 "use client";
 import { Suspense, useState, useEffect } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
@@ -82,12 +83,20 @@ function LoginContent() {
   };
 
   return (
-    <main className="min-h-screen bg-background flex items-center justify-center p-8">
+    <main className="relative min-h-screen bg-background flex flex-col items-center justify-center gap-6 p-8">
       <div className="fixed -top-[100px] -left-[100px] w-[320px] h-[320px] rounded-full bg-primary/20 blur-[80px] pointer-events-none z-0" />
       <div className="fixed -bottom-[80px] -right-[80px] w-[260px] h-[260px] rounded-full bg-secondary blur-[80px] pointer-events-none z-0" />
       <div className="fixed top-[40%] right-[15%] w-[200px] h-[200px] rounded-full bg-primary/20 blur-[80px] pointer-events-none z-0" />
 
-      <Card className="w-full max-w-[400px] relative z-10 py-0 gap-0 shadow-none">
+      <Link
+        href="/"
+        className="fixed top-6 left-6 z-20 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ChevronLeft size={16} />
+        Inicio
+      </Link>
+
+      <Card className="w-full max-w-[420px] relative z-10 py-0 gap-0 shadow-none">
         <CardContent className="p-10">
           <div className="flex justify-center mb-6">
             <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
@@ -100,7 +109,15 @@ function LoginContent() {
             <p className="text-[13px] text-muted-foreground">Panel de administración</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          {/* TODO: Botón Google OAuth aquí */}
+
+          <div className="relative flex items-center mb-6">
+            <div className="flex-1 border-t border-border" />
+            <span className="px-3 text-xs text-muted-foreground">o</span>
+            <div className="flex-1 border-t border-border" />
+          </div>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="login-email" className="text-muted-foreground">Email</Label>
               <div className="relative flex items-center">
@@ -159,6 +176,13 @@ function LoginContent() {
             </div>
           )}
 
+          <div className="mt-5 text-center">
+            <span className="text-[13px] text-muted-foreground">¿No tienes cuenta? </span>
+            <Link href="/register" className="text-[13px] text-primary hover:text-primary/70 transition-colors">
+              Regístrate
+            </Link>
+          </div>
+
           <div className="mt-5 border-t border-border pt-5">
             {!showForgot ? (
               <Button
@@ -207,6 +231,17 @@ function LoginContent() {
           </div>
         </CardContent>
       </Card>
+
+      <p className="relative z-10 max-w-[420px] text-xs text-muted-foreground text-center">
+        Al iniciar sesión aceptas nuestros{" "}
+        <Link href="#" className="hover:text-foreground hover:underline transition-colors">
+          Términos
+        </Link>{" "}
+        y{" "}
+        <Link href="#" className="hover:text-foreground hover:underline transition-colors">
+          Política de Privacidad
+        </Link>
+      </p>
     </main>
   );
 }
