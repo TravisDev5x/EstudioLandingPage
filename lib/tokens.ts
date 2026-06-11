@@ -22,14 +22,14 @@ export async function generateResetToken(email: string): Promise<string> {
   return token
 }
 
-export async function verifyEmailToken(token: string): Promise<boolean> {
+export async function verifyEmailToken(token: string): Promise<{ email: string; name: string } | null> {
   const user = await prisma.adminUser.findUnique({ where: { verifyToken: token } })
-  if (!user || !user.verifyTokenExp || user.verifyTokenExp < new Date()) return false
+  if (!user || !user.verifyTokenExp || user.verifyTokenExp < new Date()) return null
   await prisma.adminUser.update({
     where: { id: user.id },
     data: { emailVerified: true, verifyToken: null, verifyTokenExp: null },
   })
-  return true
+  return { email: user.email, name: user.name }
 }
 
 export async function verifyResetToken(token: string): Promise<AdminUser | null> {

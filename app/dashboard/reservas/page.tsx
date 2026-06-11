@@ -8,6 +8,11 @@ export default function ReservasPage() {
       descripcion="Tus reservas pronto estarán aquí"
       texto="Estamos preparando tu espacio para gestionar tus reservas de sesiones de estudio."
       icono={Calendar}
+      features={[
+        "Reserva tiempo de estudio",
+        "Calendario de disponibilidad",
+        "Confirmación automática",
+      ]}
     />
   );
 }

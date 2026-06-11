@@ -8,6 +8,11 @@ export default function ProyectosPage() {
       descripcion="Tus proyectos pronto estarán aquí"
       texto="Estamos preparando tu espacio para gestionar tus proyectos de estudio."
       icono={FolderKanban}
+      features={[
+        "Organiza tus grabaciones",
+        "Comparte archivos con el equipo",
+        "Control de versiones de mezclas",
+      ]}
     />
   );
 }
