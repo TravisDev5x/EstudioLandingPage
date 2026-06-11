@@ -18,7 +18,7 @@ export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
 
   return (
-    <main className="min-h-screen bg-background text-foreground pt-28 pb-[120px] px-6">
+    <main className="min-h-screen bg-background text-foreground pt-28 pb-16 sm:pb-24 lg:pb-[120px] px-6">
       <article className="max-w-[720px] mx-auto">
         <div className="mb-8">
           <Badge variant="secondary" className="mb-4 bg-primary/10 text-primary border-transparent">

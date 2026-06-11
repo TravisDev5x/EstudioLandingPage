@@ -153,13 +153,14 @@ export default function RolesPage() {
         </Button>
       </CardHeader>
       <CardContent>
+        <div className="overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="w-12">#</TableHead>
               <TableHead>Nombre</TableHead>
-              <TableHead>Descripción</TableHead>
-              <TableHead>Fecha</TableHead>
+              <TableHead className="hidden md:table-cell">Descripción</TableHead>
+              <TableHead className="hidden sm:table-cell">Fecha</TableHead>
               <TableHead className="text-right">Acciones</TableHead>
             </TableRow>
           </TableHeader>
@@ -181,8 +182,8 @@ export default function RolesPage() {
                 <TableRow key={role.id}>
                   <TableCell>{role.id}</TableCell>
                   <TableCell className="font-medium">{role.nombre}</TableCell>
-                  <TableCell className="text-muted-foreground">{role.descripcion || "—"}</TableCell>
-                  <TableCell className="text-muted-foreground">
+                  <TableCell className="hidden text-muted-foreground md:table-cell">{role.descripcion || "—"}</TableCell>
+                  <TableCell className="hidden text-muted-foreground sm:table-cell">
                     {new Date(role.creadoEn).toLocaleDateString("es-MX")}
                   </TableCell>
                   <TableCell className="text-right">
@@ -217,6 +218,7 @@ export default function RolesPage() {
             )}
           </TableBody>
         </Table>
+        </div>
 
         <Pagination className="mt-4">
           <PaginationContent>

@@ -84,7 +84,7 @@ function LoginContent() {
   };
 
   return (
-    <main className="relative min-h-screen bg-background flex flex-col items-center justify-center gap-6 p-8">
+    <main className="relative min-h-screen bg-background flex flex-col items-center justify-center gap-6 p-4 sm:p-8">
       <div className="fixed -top-[100px] -left-[100px] w-[320px] h-[320px] rounded-full bg-primary/20 blur-[80px] pointer-events-none z-0" />
       <div className="fixed -bottom-[80px] -right-[80px] w-[260px] h-[260px] rounded-full bg-secondary blur-[80px] pointer-events-none z-0" />
       <div className="fixed top-[40%] right-[15%] w-[200px] h-[200px] rounded-full bg-primary/20 blur-[80px] pointer-events-none z-0" />
@@ -98,7 +98,7 @@ function LoginContent() {
       </Link>
 
       <Card className="w-full max-w-[420px] relative z-10 py-0 gap-0 shadow-none">
-        <CardContent className="p-10">
+        <CardContent className="p-6 sm:p-8 lg:p-10">
           <div className="flex justify-center mb-6">
             <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
               <Lock size={32} className="text-primary" />

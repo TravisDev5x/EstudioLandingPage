@@ -12,7 +12,7 @@ const navLinks = [
 export default function LandingFooter() {
   return (
     <footer className="px-6 pt-12 pb-8 border-t border-border bg-muted/30">
-      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 mb-10">
         <div>
           <span className="font-mono text-[15px] font-semibold text-foreground block mb-2">STUDIO</span>
           <p className="text-[13px] text-muted-foreground">Donde nacen las ideas</p>

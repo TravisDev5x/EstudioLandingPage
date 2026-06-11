@@ -156,7 +156,7 @@ export default function UsuariosPage() {
     <div className="flex flex-1 items-center justify-center">
       {/* Card principal */}
       <Card className="w-full max-w-md py-0 gap-0 ring-0 border-white/10 bg-white/5 shadow-none">
-        <CardContent className="p-10">
+        <CardContent className="p-6 sm:p-8 lg:p-10">
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-[22px] font-medium text-white/90 mb-1">Registro de Usuarios</h1>

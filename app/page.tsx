@@ -38,12 +38,12 @@ function HeroSection() {
           Grabación, producción musical y clases en un espacio diseñado para artistas serios.
         </p>
 
-        <div className="flex items-center gap-3 mt-2">
-          <Button size="lg" className="flex items-center gap-2 px-6">
+        <div className="flex flex-col sm:flex-row items-center gap-3 mt-2 w-full sm:w-auto">
+          <Button size="lg" className="flex items-center gap-2 px-6 w-full sm:w-auto">
             <Calendar size={16} />
             Reservar sesión
           </Button>
-          <Button variant="ghost" size="lg" className="flex items-center gap-2 px-6">
+          <Button variant="ghost" size="lg" className="flex items-center gap-2 px-6 w-full sm:w-auto">
             <Play size={16} />
             Escuchar muestras
           </Button>
@@ -60,8 +60,8 @@ function HeroSection() {
 // ── About ─────────────────────────────────────────────────────────
 function AboutSection() {
   return (
-    <section id="about" className="py-[120px] px-6">
-      <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+    <section id="about" className="py-16 sm:py-24 lg:py-[120px] px-6">
+      <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10 lg:gap-20 items-center">
         <div className="flex flex-col gap-5">
           <p className="text-[11px] uppercase tracking-[0.15em] text-primary">Nosotros</p>
           <h2 className="font-medium leading-tight text-[clamp(28px,4vw,42px)] text-foreground">
@@ -71,7 +71,7 @@ function AboutSection() {
             Somos un estudio independiente en Ecatepec enfocado en música electrónica, producción y
             formación de artistas. Cada proyecto recibe atención personalizada.
           </p>
-          <div className="flex items-start gap-8 mt-2">
+          <div className="flex items-start gap-4 sm:gap-8 mt-2">
             {(
               [
                 ["5+", "Años de experiencia"],
@@ -121,7 +121,7 @@ const services = [
 
 function ServicesSection() {
   return (
-    <section id="servicios" className="py-[120px] px-6 bg-muted/30">
+    <section id="servicios" className="py-16 sm:py-24 lg:py-[120px] px-6 bg-muted/30">
       <div className="max-w-[1100px] mx-auto">
         <div className="text-center mb-14">
           <p className="text-[11px] uppercase tracking-[0.15em] text-primary mb-3">Servicios</p>
@@ -191,7 +191,7 @@ const pricingPlans = [
 
 function PricingSection() {
   return (
-    <section id="precios" className="py-[120px] px-6">
+    <section id="precios" className="py-16 sm:py-24 lg:py-[120px] px-6">
       <div className="max-w-[900px] mx-auto">
         <div className="text-center mb-14">
           <p className="text-[11px] uppercase tracking-[0.15em] text-primary mb-3">Precios</p>
@@ -261,7 +261,7 @@ const blogPosts = [
 
 function BlogPreviewSection() {
   return (
-    <section id="blog" className="py-[120px] px-6 bg-muted/30">
+    <section id="blog" className="py-16 sm:py-24 lg:py-[120px] px-6 bg-muted/30">
       <div className="max-w-[1100px] mx-auto">
         <div className="text-center mb-14">
           <p className="text-[11px] uppercase tracking-[0.15em] text-primary mb-3">Blog</p>
@@ -306,7 +306,7 @@ function BlogPreviewSection() {
 // ── Contact ───────────────────────────────────────────────────────
 function ContactSection() {
   return (
-    <section id="contacto" className="py-[120px] px-6">
+    <section id="contacto" className="py-16 sm:py-24 lg:py-[120px] px-6">
       <div className="max-w-[900px] mx-auto">
         <div className="text-center mb-14">
           <p className="text-[11px] uppercase tracking-[0.15em] text-primary mb-3">Contacto</p>
@@ -314,7 +314,7 @@ function ContactSection() {
             Hablemos de tu proyecto
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10 lg:gap-20">
           <div className="flex flex-col gap-5">
             {(
               [

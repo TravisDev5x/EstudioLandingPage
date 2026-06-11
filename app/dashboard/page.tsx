@@ -153,13 +153,14 @@ export default async function DashboardPage() {
 
         <Card>
           <CardContent className="p-0">
+            <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Usuario</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>Rol</TableHead>
-                  <TableHead>Registro</TableHead>
+                  <TableHead className="hidden sm:table-cell">Registro</TableHead>
                   <TableHead>Estado</TableHead>
                 </TableRow>
               </TableHeader>
@@ -193,7 +194,7 @@ export default async function DashboardPage() {
                         <TableCell>
                           <Badge variant="outline">{usuario.role?.nombre ?? "Sin rol"}</Badge>
                         </TableCell>
-                        <TableCell className="text-muted-foreground">
+                        <TableCell className="hidden text-muted-foreground sm:table-cell">
                           {dateFormatter.format(usuario.createdAt)}
                         </TableCell>
                         <TableCell>
@@ -213,6 +214,7 @@ export default async function DashboardPage() {
                 )}
               </TableBody>
             </Table>
+            </div>
           </CardContent>
         </Card>
       </div>

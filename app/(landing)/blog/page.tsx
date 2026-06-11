@@ -18,7 +18,7 @@ const posts = [
 
 export default function BlogPage() {
   return (
-    <main className="min-h-screen bg-background text-foreground pt-28 pb-[120px] px-6">
+    <main className="min-h-screen bg-background text-foreground pt-28 pb-16 sm:pb-24 lg:pb-[120px] px-6">
       <div className="max-w-[1100px] mx-auto">
         <div className="text-center mb-14">
           <p className="text-[11px] uppercase tracking-[0.15em] text-primary mb-3">Blog</p>

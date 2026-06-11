@@ -36,7 +36,7 @@ export function ComingSoon({
       <div className="pointer-events-none absolute -bottom-24 -right-24 size-72 rounded-full bg-primary/5 blur-3xl" />
 
       <Card className="w-full max-w-lg py-0 gap-0 shadow-none">
-        <CardContent className="flex flex-col items-center gap-6 p-10 text-center sm:p-12">
+        <CardContent className="flex flex-col items-center gap-6 p-6 text-center sm:p-12">
           <Badge className="bg-primary/10 text-primary">En desarrollo</Badge>
 
           <div className="flex size-20 items-center justify-center rounded-2xl bg-primary/10 animate-pulse">
