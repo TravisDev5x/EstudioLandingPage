@@ -28,11 +28,6 @@ function HeroSection() {
       <div className="absolute top-1/2 right-[15%] w-[250px] h-[250px] rounded-full bg-primary/20 blur-[80px] pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center gap-6 max-w-2xl">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/10 text-[13px] text-primary">
-          <Music size={12} />
-          Estudio de grabación · Ecatepec
-        </div>
-
         <h1 className="font-medium leading-[1.1] tracking-[-0.02em] text-[clamp(40px,8vw,80px)]">
           <span className="text-foreground">Donde nacen</span>
           <br />
