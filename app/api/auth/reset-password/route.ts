@@ -1,20 +1,25 @@
 import { NextResponse } from "next/server"
-import { z } from "zod"
 import bcrypt from "bcryptjs"
 import prisma from "@/lib/prisma"
 
 export const runtime = 'nodejs'
 import { verifyResetToken } from "@/lib/tokens"
-
-const schema = z.object({
-  token: z.string().min(1),
-  password: z.string().min(6),
-})
+import { rateLimiters, checkRateLimit, getClientIp, RATE_LIMIT_MESSAGE } from "@/lib/rate-limit"
+import { resetPasswordSchema } from "@/lib/validations"
 
 export async function POST(request: Request) {
-  const parsed = schema.safeParse(await request.json())
+  const ip = getClientIp(request)
+  const { success } = await checkRateLimit(rateLimiters.resetPassword, ip)
+  if (!success) {
+    return NextResponse.json({ error: RATE_LIMIT_MESSAGE }, { status: 429 })
+  }
+
+  const parsed = resetPasswordSchema.safeParse(await request.json())
   if (!parsed.success) {
-    return NextResponse.json({ error: "Datos inválidos" }, { status: 400 })
+    return NextResponse.json(
+      { error: parsed.error.issues[0]?.message ?? "Datos inválidos" },
+      { status: 400 }
+    )
   }
 
   const { token, password } = parsed.data
@@ -24,7 +29,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Token inválido o expirado" }, { status: 400 })
   }
 
-  const hashed = await bcrypt.hash(password, 10)
+  const hashed = await bcrypt.hash(password, 12)
   await prisma.user.update({
     where: { id: user.id },
     data: { password: hashed, resetToken: null, resetTokenExp: null },

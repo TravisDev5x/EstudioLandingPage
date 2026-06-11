@@ -52,6 +52,8 @@ function LoginContent() {
     if (result?.code === "EMAIL_NOT_VERIFIED") {
       toast.error("Debes verificar tu email antes de iniciar sesión");
       setShowUnverified(true);
+    } else if (result?.code === "RATE_LIMITED") {
+      toast.error("Demasiados intentos, intenta más tarde.");
     } else if (result?.error) {
       toast.error("Credenciales incorrectas");
     } else {

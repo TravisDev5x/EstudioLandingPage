@@ -2,11 +2,15 @@ import { NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import prisma from '../../../lib/prisma';
 import { createRoleSchema } from '../../../lib/validations';
+import { requireAdmin } from '../../../lib/api-auth';
 
 export const runtime = 'nodejs'
 
 // Listar roles (Ruta GET) con paginación y búsqueda
 export async function GET(request: Request) {
+  const adminCheck = await requireAdmin();
+  if (!adminCheck.ok) return adminCheck.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const page = Math.max(1, Number(searchParams.get('page')) || 1);
@@ -44,6 +48,9 @@ export async function GET(request: Request) {
 
 // Crear un nuevo rol (Ruta POST)
 export async function POST(request: Request) {
+  const adminCheck = await requireAdmin();
+  if (!adminCheck.ok) return adminCheck.response;
+
   try {
     const parsed = createRoleSchema.safeParse(await request.json());
     if (!parsed.success) {

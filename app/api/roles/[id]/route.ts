@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import prisma from '../../../../lib/prisma';
-import { updateRoleSchema } from '../../../../lib/validations';
+import { updateRoleSchema, idParamSchema } from '../../../../lib/validations';
+import { requireAdmin } from '../../../../lib/api-auth';
 
 export const runtime = 'nodejs'
 
@@ -9,15 +10,23 @@ type RouteContext = { params: Promise<{ id: string }> };
 
 // Actualizar un rol (Ruta PUT)
 export async function PUT(request: Request, { params }: RouteContext) {
+  const adminCheck = await requireAdmin();
+  if (!adminCheck.ok) return adminCheck.response;
+
   try {
     const { id } = await params;
+    const parsedId = idParamSchema.safeParse(id);
+    if (!parsedId.success) {
+      return NextResponse.json({ error: "ID inválido" }, { status: 400 });
+    }
+
     const parsed = updateRoleSchema.safeParse(await request.json());
     if (!parsed.success) {
       return NextResponse.json({ error: parsed.error.flatten().fieldErrors }, { status: 422 });
     }
 
     const rolActualizado = await prisma.role.update({
-      where: { id: Number(id) },
+      where: { id: parsedId.data },
       data: {
         nombre: parsed.data.nombre,
         descripcion: parsed.data.descripcion,
@@ -35,9 +44,16 @@ export async function PUT(request: Request, { params }: RouteContext) {
 
 // Eliminar un rol (Ruta DELETE)
 export async function DELETE(request: Request, { params }: RouteContext) {
+  const adminCheck = await requireAdmin();
+  if (!adminCheck.ok) return adminCheck.response;
+
   try {
     const { id } = await params;
-    const roleId = Number(id);
+    const parsedId = idParamSchema.safeParse(id);
+    if (!parsedId.success) {
+      return NextResponse.json({ error: "ID inválido" }, { status: 400 });
+    }
+    const roleId = parsedId.data;
 
     const usuariosAsignados = await prisma.user.count({ where: { roleId, deletedAt: null } });
     if (usuariosAsignados > 0) {

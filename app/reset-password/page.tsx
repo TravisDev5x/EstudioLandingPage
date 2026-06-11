@@ -29,12 +29,20 @@ function ResetPasswordContent() {
   const token = searchParams.get("token");
 
   const mismatch = password.length > 0 && confirmPassword.length > 0 && password !== confirmPassword;
-  const canSubmit = !loading && password.length >= 6 && confirmPassword.length >= 6 && !mismatch;
+  const canSubmit = !loading && password.length >= 8 && confirmPassword.length >= 8 && !mismatch;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!token) {
       toast.error("Token inválido");
+      return;
+    }
+    if (password.length < 8 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+      toast.error("La contraseña debe tener al menos 8 caracteres, una mayúscula y un número");
+      return;
+    }
+    if (password !== confirmPassword) {
+      toast.error("Las contraseñas no coinciden");
       return;
     }
     setLoading(true);
@@ -109,6 +117,9 @@ function ResetPasswordContent() {
                       {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
                     </button>
                   </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    Mínimo 8 caracteres, con una mayúscula y un número
+                  </p>
                 </div>
 
                 <div className="flex flex-col gap-1">

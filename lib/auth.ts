@@ -6,16 +6,25 @@ import bcrypt from "bcryptjs"
 import prisma from "./prisma"
 import { loginSchema } from "./validations"
 import { authConfig } from "./auth.config"
+import { rateLimiters, checkRateLimit, getClientIp } from "./rate-limit"
 
 class EmailNotVerifiedError extends CredentialsSignin {
   code = "EMAIL_NOT_VERIFIED" as const
+}
+
+class RateLimitedError extends CredentialsSignin {
+  code = "RATE_LIMITED" as const
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
-      async authorize(credentials) {
+      async authorize(credentials, request) {
+        const ip = getClientIp(request)
+        const { success } = await checkRateLimit(rateLimiters.login, ip)
+        if (!success) throw new RateLimitedError()
+
         const parsed = loginSchema.safeParse(credentials)
         if (!parsed.success) return null
 

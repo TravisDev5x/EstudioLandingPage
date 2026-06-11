@@ -4,10 +4,17 @@ import prisma from "@/lib/prisma"
 import { registerSchema } from "@/lib/validations"
 import { generateVerifyToken } from "@/lib/tokens"
 import { sendVerificationEmail } from "@/lib/email"
+import { rateLimiters, checkRateLimit, getClientIp, RATE_LIMIT_MESSAGE } from "@/lib/rate-limit"
 
 export const runtime = 'nodejs'
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request)
+  const { success } = await checkRateLimit(rateLimiters.register, ip)
+  if (!success) {
+    return NextResponse.json({ error: RATE_LIMIT_MESSAGE }, { status: 429 })
+  }
+
   const parsed = registerSchema.safeParse(await request.json())
   if (!parsed.success) {
     return NextResponse.json(
@@ -20,12 +27,15 @@ export async function POST(request: Request) {
 
   const existing = await prisma.user.findUnique({ where: { email } })
   if (existing) {
-    return NextResponse.json({ error: "Este email ya está registrado" }, { status: 409 })
+    return NextResponse.json(
+      { error: "No se pudo completar el registro con estos datos" },
+      { status: 409 }
+    )
   }
 
   const clienteRole = await prisma.role.findUnique({ where: { nombre: "Cliente" } })
 
-  const hashed = await bcrypt.hash(password, 10)
+  const hashed = await bcrypt.hash(password, 12)
 
   await prisma.user.create({
     data: {

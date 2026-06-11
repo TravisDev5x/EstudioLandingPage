@@ -4,9 +4,13 @@ import prisma from '../../../lib/prisma';
 
 export const runtime = 'nodejs'
 import { createUserSchema } from '../../../lib/validations';
+import { requireAdmin } from '../../../lib/api-auth';
 
 // Leer todos los usuarios (Ruta GET) con paginación y búsqueda
 export async function GET(request: Request) {
+  const adminCheck = await requireAdmin();
+  if (!adminCheck.ok) return adminCheck.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const trash = searchParams.get('trash') === 'true';
@@ -44,6 +48,9 @@ export async function GET(request: Request) {
 
 // Crear un nuevo usuario (Ruta POST)
 export async function POST(request: Request) {
+  const adminCheck = await requireAdmin();
+  if (!adminCheck.ok) return adminCheck.response;
+
   try {
     const parsed = createUserSchema.safeParse(await request.json());
     if (!parsed.success) {
