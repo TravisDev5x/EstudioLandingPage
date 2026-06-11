@@ -151,3 +151,5 @@ npx prisma studio   # Explorador visual de la base de datos
 ## Despliegue
 
 Pensado para desplegarse en [Vercel](https://vercel.com): conecta el repositorio, agrega las variables de entorno (sección Configuración) y despliega. La base de datos MySQL puede alojarse en [Railway](https://railway.app) o cualquier proveedor compatible.
+
+<!-- CI check trigger -->
