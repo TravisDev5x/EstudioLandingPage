@@ -13,11 +13,12 @@ export async function GET(request: Request) {
 
   try {
     const { searchParams } = new URL(request.url);
+    const trash = searchParams.get('trash') === 'true';
     const page = Math.max(1, Number(searchParams.get('page')) || 1);
     const limit = Math.max(1, Number(searchParams.get('limit')) || 5);
     const search = (searchParams.get('search') || '').trim();
 
-    const where: Prisma.RoleWhereInput = {};
+    const where: Prisma.RoleWhereInput = trash ? { deletedAt: { not: null } } : { deletedAt: null };
     if (search !== '') {
       where.OR = [
         { name: { contains: search } },
