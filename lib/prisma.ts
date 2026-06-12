@@ -1,9 +1,8 @@
 import { PrismaClient } from '@prisma/client'
-import { PrismaMariaDb } from '@prisma/adapter-mariadb'
+import { PrismaPg } from '@prisma/adapter-pg'
 
 const prismaClientSingleton = () => {
-  const connectionString = process.env.DATABASE_URL as string
-  const adapter = new PrismaMariaDb(connectionString)
+  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
 
   return new PrismaClient({ adapter })
 }
