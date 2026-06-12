@@ -30,8 +30,8 @@ import {
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
-type EditingUser = { id: number; name: string; email: string };
-type ConfirmDelete = { id: number; name: string } | null;
+type EditingUser = { id: string; name: string; email: string };
+type ConfirmDelete = { id: string; name: string } | null;
 
 const LIMIT = 5;
 
@@ -118,13 +118,13 @@ export default function UsuariosPage() {
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     await fetch(`/api/users/${id}`, { method: "DELETE" });
     fetchUsuarios(currentPage);
     toast.success("Usuario movido a la papelera");
   };
 
-  const handleRestore = async (id: number) => {
+  const handleRestore = async (id: string) => {
     await fetch(`/api/users/${id}`, { method: "PATCH" });
     fetchUsuarios(currentPage);
     toast.success("Usuario restaurado");

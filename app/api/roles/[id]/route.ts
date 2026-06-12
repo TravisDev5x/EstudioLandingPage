@@ -28,8 +28,8 @@ export async function PUT(request: Request, { params }: RouteContext) {
     const rolActualizado = await prisma.role.update({
       where: { id: parsedId.data },
       data: {
-        nombre: parsed.data.nombre,
-        descripcion: parsed.data.descripcion,
+        name: parsed.data.name,
+        description: parsed.data.description,
       },
     });
 

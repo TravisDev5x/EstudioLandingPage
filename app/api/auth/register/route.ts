@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     )
   }
 
-  const clienteRole = await prisma.role.findUnique({ where: { nombre: "Cliente" } })
+  const clienteRole = await prisma.role.findUnique({ where: { name: "Cliente" } })
 
   const hashed = await bcrypt.hash(password, 12)
 

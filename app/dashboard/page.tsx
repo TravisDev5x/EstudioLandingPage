@@ -78,14 +78,14 @@ export default async function DashboardPage() {
 
   const [totalUsuarios, totalRoles, usuariosActivos, usuariosPendientes, nuevosClientes, recientes] =
     await Promise.all([
-      prisma.user.count({ where: { role: { nombre: "Cliente" }, deletedAt: null } }),
+      prisma.user.count({ where: { role: { name: "Cliente" }, deletedAt: null } }),
       prisma.role.count(),
       prisma.user.count({ where: { emailVerified: true, deletedAt: null } }),
       prisma.user.count({ where: { emailVerified: false, deletedAt: null } }),
       prisma.user.count({
         where: {
           createdAt: { gte: sieteDiasAtras },
-          role: { nombre: "Cliente" },
+          role: { name: "Cliente" },
           deletedAt: null,
         },
       }),
@@ -196,7 +196,7 @@ export default async function DashboardPage() {
                         </TableCell>
                         <TableCell className="text-muted-foreground">{usuario.email}</TableCell>
                         <TableCell>
-                          <Badge variant="outline">{usuario.role?.nombre ?? "Sin rol"}</Badge>
+                          <Badge variant="outline">{usuario.role?.name ?? "Sin rol"}</Badge>
                         </TableCell>
                         <TableCell className="hidden text-muted-foreground sm:table-cell">
                           {dateFormatter.format(usuario.createdAt)}

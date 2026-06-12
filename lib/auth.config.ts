@@ -14,14 +14,14 @@ export const authConfig = {
       const existingUser = await prisma.user.findUnique({ where: { email } })
 
       if (!existingUser) {
-        const clienteRole = await prisma.role.findUnique({ where: { nombre: "Cliente" } })
+        const clienteRole = await prisma.role.findUnique({ where: { name: "Cliente" } })
         await prisma.user.create({
           data: {
             name: user.name ?? profile?.name ?? email,
             email,
             password: null,
             emailVerified: true,
-            roleId: clienteRole?.id ?? null,
+            roleId: clienteRole?.id,
           },
         })
       } else if (!existingUser.emailVerified) {
@@ -40,8 +40,8 @@ export const authConfig = {
           where: { email: token.email },
           include: { role: true },
         })
-        if (dbUser) token.id = String(dbUser.id)
-        token.role = dbUser?.role?.nombre ?? null
+        if (dbUser) token.id = dbUser.id
+        token.role = dbUser?.role?.name ?? null
       }
       return token
     },
