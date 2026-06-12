@@ -33,10 +33,10 @@ import {
 } from "@/components/ui/pagination";
 import { toast } from "sonner";
 
-type Role = { id: number; nombre: string; descripcion: string | null; creadoEn: string };
-type RoleForm = { nombre: string; descripcion: string };
-type EditingRole = { id: number; nombre: string; descripcion: string } | null;
-type ConfirmDelete = { id: number; nombre: string } | null;
+type Role = { id: number; name: string; description: string | null; createdAt: string };
+type RoleForm = { name: string; description: string };
+type EditingRole = { id: number; name: string; description: string } | null;
+type ConfirmDelete = { id: number; name: string } | null;
 
 const LIMIT = 5;
 
@@ -50,7 +50,7 @@ const getPageNumbers = (current: number, total: number): (number | "ellipsis")[]
   return pages;
 };
 
-const emptyForm: RoleForm = { nombre: "", descripcion: "" };
+const emptyForm: RoleForm = { name: "", description: "" };
 
 export default function RolesPage() {
   const [roles, setRoles] = useState<Role[]>([]);
@@ -115,7 +115,7 @@ export default function RolesPage() {
       const res = await fetch(`/api/roles/${editingRole.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre: editingRole.nombre, descripcion: editingRole.descripcion }),
+        body: JSON.stringify({ name: editingRole.name, description: editingRole.description }),
       });
       if (!res.ok) {
         const data = await res.json();
@@ -181,10 +181,10 @@ export default function RolesPage() {
               roles.map((role) => (
                 <TableRow key={role.id}>
                   <TableCell>{role.id}</TableCell>
-                  <TableCell className="font-medium">{role.nombre}</TableCell>
-                  <TableCell className="hidden text-muted-foreground md:table-cell">{role.descripcion || "—"}</TableCell>
+                  <TableCell className="font-medium">{role.name}</TableCell>
+                  <TableCell className="hidden text-muted-foreground md:table-cell">{role.description || "—"}</TableCell>
                   <TableCell className="hidden text-muted-foreground sm:table-cell">
-                    {new Date(role.creadoEn).toLocaleDateString("es-MX")}
+                    {new Date(role.createdAt).toLocaleDateString("es-MX")}
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-1">
@@ -195,8 +195,8 @@ export default function RolesPage() {
                         onClick={() =>
                           setEditingRole({
                             id: role.id,
-                            nombre: role.nombre,
-                            descripcion: role.descripcion ?? "",
+                            name: role.name,
+                            description: role.description ?? "",
                           })
                         }
                       >
@@ -207,7 +207,7 @@ export default function RolesPage() {
                         size="icon-sm"
                         aria-label="Eliminar"
                         className="hover:text-destructive"
-                        onClick={() => setConfirmDelete({ id: role.id, nombre: role.nombre })}
+                        onClick={() => setConfirmDelete({ id: role.id, name: role.name })}
                       >
                         <Trash2 size={14} />
                       </Button>
@@ -274,8 +274,8 @@ export default function RolesPage() {
               <Label htmlFor="create-nombre">Nombre</Label>
               <Input
                 id="create-nombre"
-                value={createForm.nombre}
-                onChange={(e) => setCreateForm((f) => ({ ...f, nombre: e.target.value }))}
+                value={createForm.name}
+                onChange={(e) => setCreateForm((f) => ({ ...f, name: e.target.value }))}
                 required
               />
             </div>
@@ -283,8 +283,8 @@ export default function RolesPage() {
               <Label htmlFor="create-descripcion">Descripción</Label>
               <Textarea
                 id="create-descripcion"
-                value={createForm.descripcion}
-                onChange={(e) => setCreateForm((f) => ({ ...f, descripcion: e.target.value }))}
+                value={createForm.description}
+                onChange={(e) => setCreateForm((f) => ({ ...f, description: e.target.value }))}
               />
             </div>
             <DialogFooter>
@@ -308,9 +308,9 @@ export default function RolesPage() {
               <Label htmlFor="edit-nombre">Nombre</Label>
               <Input
                 id="edit-nombre"
-                value={editingRole?.nombre || ""}
+                value={editingRole?.name || ""}
                 onChange={(e) =>
-                  setEditingRole((r) => (r ? { ...r, nombre: e.target.value } : null))
+                  setEditingRole((r) => (r ? { ...r, name: e.target.value } : null))
                 }
               />
             </div>
@@ -318,9 +318,9 @@ export default function RolesPage() {
               <Label htmlFor="edit-descripcion">Descripción</Label>
               <Textarea
                 id="edit-descripcion"
-                value={editingRole?.descripcion || ""}
+                value={editingRole?.description || ""}
                 onChange={(e) =>
-                  setEditingRole((r) => (r ? { ...r, descripcion: e.target.value } : null))
+                  setEditingRole((r) => (r ? { ...r, description: e.target.value } : null))
                 }
               />
             </div>
@@ -340,7 +340,7 @@ export default function RolesPage() {
           <AlertDialogHeader>
             <AlertDialogTitle className="text-center">¿Eliminar rol?</AlertDialogTitle>
             <AlertDialogDescription className="text-center">
-              Se eliminará el rol &quot;{confirmDelete?.nombre}&quot; de forma permanente.
+              Se eliminará el rol &quot;{confirmDelete?.name}&quot; de forma permanente.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <div className="flex justify-center gap-2 pt-2">

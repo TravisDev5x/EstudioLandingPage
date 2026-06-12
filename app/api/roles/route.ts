@@ -20,8 +20,8 @@ export async function GET(request: Request) {
     const where: Prisma.RoleWhereInput = {};
     if (search !== '') {
       where.OR = [
-        { nombre: { contains: search } },
-        { descripcion: { contains: search } },
+        { name: { contains: search } },
+        { description: { contains: search } },
       ];
     }
 
@@ -59,8 +59,8 @@ export async function POST(request: Request) {
 
     const nuevoRol = await prisma.role.create({
       data: {
-        nombre: parsed.data.nombre,
-        descripcion: parsed.data.descripcion,
+        name: parsed.data.name,
+        description: parsed.data.description,
       },
     });
 

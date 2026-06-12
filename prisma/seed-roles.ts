@@ -7,15 +7,15 @@ const prisma = new PrismaClient({ adapter })
 
 async function main() {
   await prisma.role.upsert({
-    where: { nombre: "Admin" },
+    where: { name: "Admin" },
     update: {},
-    create: { nombre: "Admin", descripcion: "Acceso completo al sistema" },
+    create: { name: "Admin", description: "Acceso completo al sistema" },
   })
 
   await prisma.role.upsert({
-    where: { nombre: "Cliente" },
+    where: { name: "Cliente" },
     update: {},
-    create: { nombre: "Cliente", descripcion: "Usuario cliente del estudio" },
+    create: { name: "Cliente", description: "Usuario cliente del estudio" },
   })
 
   console.log("✓ Roles base creados: Admin, Cliente")

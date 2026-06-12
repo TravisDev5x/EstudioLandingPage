@@ -22,8 +22,11 @@ export const resetPasswordSchema = z.object({
   password: passwordSchema,
 })
 
-/** Valida params dinámicos [id]: deben ser enteros positivos. */
+/** Valida params dinámicos [id] de Role: deben ser enteros positivos. */
 export const idParamSchema = z.coerce.number().int().positive()
+
+/** Valida params dinámicos [id] de User: deben ser UUID. */
+export const userIdParamSchema = z.uuid()
 
 export const createUserSchema = z.object({
   name: z.string().min(2, "Mínimo 2 caracteres").max(100),
@@ -33,8 +36,8 @@ export const createUserSchema = z.object({
 export const updateUserSchema = createUserSchema.partial()
 
 export const createRoleSchema = z.object({
-  nombre: z.string().min(2, "Mínimo 2 caracteres").max(100),
-  descripcion: z.string().max(255).optional(),
+  name: z.string().min(2, "Mínimo 2 caracteres").max(100),
+  description: z.string().max(255).optional(),
 })
 
 export const updateRoleSchema = createRoleSchema.partial()

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import prisma from '../../../../lib/prisma';
 
 export const runtime = 'nodejs'
-import { updateUserSchema, idParamSchema } from '../../../../lib/validations';
+import { updateUserSchema, userIdParamSchema } from '../../../../lib/validations';
 import { requireAdmin } from '../../../../lib/api-auth';
 
 type RouteContext = { params: Promise<{ id: string }> };
@@ -14,7 +14,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
 
   try {
     const { id } = await params;
-    const parsedId = idParamSchema.safeParse(id);
+    const parsedId = userIdParamSchema.safeParse(id);
     if (!parsedId.success) {
       return NextResponse.json({ error: "ID inválido" }, { status: 400 });
     }
@@ -45,7 +45,7 @@ export async function DELETE(request: Request, { params }: RouteContext) {
 
   try {
     const { id } = await params;
-    const parsedId = idParamSchema.safeParse(id);
+    const parsedId = userIdParamSchema.safeParse(id);
     if (!parsedId.success) {
       return NextResponse.json({ error: "ID inválido" }, { status: 400 });
     }
@@ -68,7 +68,7 @@ export async function PATCH(request: Request, { params }: RouteContext) {
 
   try {
     const { id } = await params;
-    const parsedId = idParamSchema.safeParse(id);
+    const parsedId = userIdParamSchema.safeParse(id);
     if (!parsedId.success) {
       return NextResponse.json({ error: "ID inválido" }, { status: 400 });
     }
