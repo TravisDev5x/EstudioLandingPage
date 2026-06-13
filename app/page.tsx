@@ -24,6 +24,17 @@ import {
 function HeroSection() {
   return (
     <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden px-6 text-center">
+      <Image
+        src="https://res.cloudinary.com/deh81ozjh/image/upload/v1781315541/Panoramica2_floikl.png"
+        alt=""
+        fill
+        priority
+        className="object-cover object-center"
+        aria-hidden="true"
+      />
+
+      <div className="absolute inset-0 bg-white/80 dark:bg-black/70 transition-colors duration-300" />
+
       <div className="absolute -top-24 -left-24 w-[400px] h-[400px] rounded-full bg-primary/20 blur-[80px] pointer-events-none" />
       <div className="absolute -bottom-20 -right-20 w-[350px] h-[350px] rounded-full bg-primary/20 blur-[80px] pointer-events-none" />
       <div className="absolute top-1/2 right-[15%] w-[250px] h-[250px] rounded-full bg-primary/20 blur-[80px] pointer-events-none" />
