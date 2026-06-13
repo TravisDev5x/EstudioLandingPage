@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import LandingNavbar from "@/app/(landing)/_components/Navbar";
 import LandingFooter from "@/app/(landing)/_components/Footer";
 import { Button } from "@/components/ui/button";
@@ -88,11 +89,15 @@ function AboutSection() {
         </div>
 
         <Card className="py-0 gap-0">
-          <CardContent className="p-0 flex items-center justify-center" style={{ aspectRatio: "4/3" }}>
-            <div className="flex flex-col items-center gap-2 text-muted-foreground">
-              <ImageIcon size={32} />
-              <span className="text-[13px]">Foto del estudio</span>
-            </div>
+          <CardContent className="p-0 overflow-hidden" style={{ aspectRatio: "4/3" }}>
+            <Image
+              src="https://res.cloudinary.com/deh81ozjh/image/upload/v1781315539/Frontal1_ufulj4.png"
+              alt="Sala de producción del estudio"
+              width={800}
+              height={600}
+              className="w-full h-full object-cover"
+              priority
+            />
           </CardContent>
         </Card>
       </div>
