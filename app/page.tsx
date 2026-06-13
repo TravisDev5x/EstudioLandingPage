@@ -33,7 +33,7 @@ function HeroSection() {
         aria-hidden="true"
       />
 
-      <div className="absolute inset-0 bg-white/80 dark:bg-black/70 transition-colors duration-300" />
+      <div className="absolute inset-0 bg-white/90 dark:bg-black/70 transition-colors duration-300" />
 
       <div className="absolute -top-24 -left-24 w-[400px] h-[400px] rounded-full bg-primary/20 blur-[80px] pointer-events-none" />
       <div className="absolute -bottom-20 -right-20 w-[350px] h-[350px] rounded-full bg-primary/20 blur-[80px] pointer-events-none" />
