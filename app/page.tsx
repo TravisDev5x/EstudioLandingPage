@@ -33,13 +33,13 @@ function HeroSection() {
         aria-hidden="true"
       />
 
-      <div className="absolute inset-0 bg-white/90 dark:bg-black/70 transition-colors duration-300" />
+      <div className="absolute inset-0 bg-white/35 dark:bg-black/70 transition-colors duration-300" />
 
       <div className="absolute -top-24 -left-24 w-[400px] h-[400px] rounded-full bg-primary/20 blur-[80px] pointer-events-none" />
       <div className="absolute -bottom-20 -right-20 w-[350px] h-[350px] rounded-full bg-primary/20 blur-[80px] pointer-events-none" />
       <div className="absolute top-1/2 right-[15%] w-[250px] h-[250px] rounded-full bg-primary/20 blur-[80px] pointer-events-none" />
 
-      <div className="relative z-10 flex flex-col items-center gap-6 max-w-2xl">
+      <div className="relative z-10 flex flex-col items-center gap-6 max-w-2xl rounded-3xl bg-background/60 backdrop-blur-md px-6 py-10 sm:px-12 sm:py-14">
         <h1 className="font-medium leading-[1.1] tracking-[-0.02em] text-[clamp(40px,8vw,80px)]">
           <span className="text-foreground">Donde nacen</span>
           <br />
@@ -83,20 +83,6 @@ function AboutSection() {
             Somos un estudio independiente en Ecatepec enfocado en música electrónica, producción y
             formación de artistas. Cada proyecto recibe atención personalizada.
           </p>
-          <div className="flex items-start gap-4 sm:gap-8 mt-2">
-            {(
-              [
-                ["5+", "Años de experiencia"],
-                ["200+", "Proyectos grabados"],
-                ["50+", "Artistas formados"],
-              ] as const
-            ).map(([num, label]) => (
-              <div key={label}>
-                <p className="text-[32px] font-medium text-foreground leading-none mb-1">{num}</p>
-                <p className="text-[12px] text-muted-foreground">{label}</p>
-              </div>
-            ))}
-          </div>
         </div>
 
         <Card className="py-0 gap-0">
