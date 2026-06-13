@@ -29,7 +29,7 @@ function HeroSection() {
         alt=""
         fill
         priority
-        className="object-cover object-center"
+        className="object-cover object-right sm:object-center"
         aria-hidden="true"
       />
 
