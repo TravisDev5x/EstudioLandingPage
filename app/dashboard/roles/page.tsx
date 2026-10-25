@@ -1,10 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Pencil, Trash2, Plus } from "lucide-react";
+import { Pencil, Trash2, Plus, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -33,7 +34,7 @@ import {
 } from "@/components/ui/pagination";
 import { toast } from "sonner";
 
-type Role = { id: number; name: string; description: string | null; createdAt: string };
+type Role = { id: number; name: string; description: string | null; createdAt: string; deletedAt: string | null };
 type RoleForm = { name: string; description: string };
 type EditingRole = { id: number; name: string; description: string } | null;
 type ConfirmDelete = { id: number; name: string } | null;
@@ -57,6 +58,7 @@ export default function RolesPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [showTrash, setShowTrash] = useState(false);
 
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [createForm, setCreateForm] = useState<RoleForm>(emptyForm);
@@ -69,6 +71,7 @@ export default function RolesPage() {
     const params = new URLSearchParams();
     params.set("page", String(page));
     params.set("limit", String(LIMIT));
+    if (showTrash) params.set("trash", "true");
 
     const res = await fetch(`/api/roles?${params.toString()}`);
     const data = await res.json();
@@ -81,7 +84,7 @@ export default function RolesPage() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchRoles(1);
-  }, []);
+  }, [showTrash]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -137,20 +140,49 @@ export default function RolesPage() {
         throw new Error(typeof data.error === "string" ? data.error : "Error al eliminar el rol");
       }
       fetchRoles(currentPage);
-      toast.success("Rol eliminado correctamente");
+      toast.success("Rol movido a la papelera");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Error al eliminar el rol");
+    }
+  };
+
+  const handleRestore = async (id: number) => {
+    try {
+      const res = await fetch(`/api/roles/${id}`, { method: "PATCH" });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(typeof data.error === "string" ? data.error : "Error al restaurar el rol");
+      }
+      fetchRoles(currentPage);
+      toast.success("Rol restaurado");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Error al restaurar el rol");
     }
   };
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
-        <CardTitle>Roles</CardTitle>
-        <Button size="sm" onClick={() => setIsCreateOpen(true)}>
-          <Plus />
-          Nuevo rol
-        </Button>
+        <CardTitle>{showTrash ? "Roles eliminados" : "Roles"}</CardTitle>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <Switch
+              id="papelera-switch"
+              checked={showTrash}
+              onCheckedChange={(checked) => setShowTrash(checked)}
+              size="sm"
+            />
+            <label htmlFor="papelera-switch" className="text-sm text-muted-foreground cursor-pointer">
+              Papelera
+            </label>
+          </div>
+          {!showTrash && (
+            <Button size="sm" onClick={() => setIsCreateOpen(true)}>
+              <Plus />
+              Nuevo rol
+            </Button>
+          )}
+        </div>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
@@ -174,7 +206,7 @@ export default function RolesPage() {
             ) : roles.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} className="text-center text-muted-foreground">
-                  No hay roles registrados todavía.
+                  {showTrash ? "La papelera está vacía." : "No hay roles registrados todavía."}
                 </TableCell>
               </TableRow>
             ) : (
@@ -188,29 +220,42 @@ export default function RolesPage() {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-1">
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        aria-label="Editar"
-                        onClick={() =>
-                          setEditingRole({
-                            id: role.id,
-                            name: role.name,
-                            description: role.description ?? "",
-                          })
-                        }
-                      >
-                        <Pencil size={14} />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        aria-label="Eliminar"
-                        className="hover:text-destructive"
-                        onClick={() => setConfirmDelete({ id: role.id, name: role.name })}
-                      >
-                        <Trash2 size={14} />
-                      </Button>
+                      {showTrash ? (
+                        <Button
+                          variant="ghost"
+                          size="icon-sm"
+                          aria-label="Restaurar"
+                          onClick={() => handleRestore(role.id)}
+                        >
+                          <RotateCcw size={14} />
+                        </Button>
+                      ) : (
+                        <>
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            aria-label="Editar"
+                            onClick={() =>
+                              setEditingRole({
+                                id: role.id,
+                                name: role.name,
+                                description: role.description ?? "",
+                              })
+                            }
+                          >
+                            <Pencil size={14} />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            aria-label="Eliminar"
+                            className="hover:text-destructive"
+                            onClick={() => setConfirmDelete({ id: role.id, name: role.name })}
+                          >
+                            <Trash2 size={14} />
+                          </Button>
+                        </>
+                      )}
                     </div>
                   </TableCell>
                 </TableRow>
@@ -340,7 +385,7 @@ export default function RolesPage() {
           <AlertDialogHeader>
             <AlertDialogTitle className="text-center">¿Eliminar rol?</AlertDialogTitle>
             <AlertDialogDescription className="text-center">
-              Se eliminará el rol &quot;{confirmDelete?.name}&quot; de forma permanente.
+              Se moverá el rol &quot;{confirmDelete?.name}&quot; a la papelera. Esta acción se puede deshacer.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <div className="flex justify-center gap-2 pt-2">

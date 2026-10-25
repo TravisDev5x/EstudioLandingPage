@@ -42,7 +42,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
   }
 }
 
-// Eliminar un rol (Ruta DELETE)
+// Eliminar (soft delete) un rol (Ruta DELETE)
 export async function DELETE(request: Request, { params }: RouteContext) {
   const adminCheck = await requireAdmin();
   if (!adminCheck.ok) return adminCheck.response;
@@ -63,10 +63,36 @@ export async function DELETE(request: Request, { params }: RouteContext) {
       );
     }
 
-    const rolEliminado = await prisma.role.delete({ where: { id: roleId } });
+    const rolEliminado = await prisma.role.update({
+      where: { id: roleId },
+      data: { deletedAt: new Date() },
+    });
 
     return NextResponse.json(rolEliminado);
   } catch {
     return NextResponse.json({ error: "Error al eliminar el rol" }, { status: 500 });
+  }
+}
+
+// Restaurar un rol eliminado (Ruta PATCH)
+export async function PATCH(request: Request, { params }: RouteContext) {
+  const adminCheck = await requireAdmin();
+  if (!adminCheck.ok) return adminCheck.response;
+
+  try {
+    const { id } = await params;
+    const parsedId = idParamSchema.safeParse(id);
+    if (!parsedId.success) {
+      return NextResponse.json({ error: "ID inválido" }, { status: 400 });
+    }
+
+    const rolRestaurado = await prisma.role.update({
+      where: { id: parsedId.data },
+      data: { deletedAt: null },
+    });
+
+    return NextResponse.json(rolRestaurado);
+  } catch {
+    return NextResponse.json({ error: "Error al restaurar el rol" }, { status: 500 });
   }
 }
