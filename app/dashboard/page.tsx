@@ -79,7 +79,7 @@ export default async function DashboardPage() {
   const [totalUsuarios, totalRoles, usuariosActivos, usuariosPendientes, nuevosClientes, recientes] =
     await Promise.all([
       prisma.user.count({ where: { role: { name: "Cliente" }, deletedAt: null } }),
-      prisma.role.count(),
+      prisma.role.count({ where: { deletedAt: null } }),
       prisma.user.count({ where: { emailVerified: true, deletedAt: null } }),
       prisma.user.count({ where: { emailVerified: false, deletedAt: null } }),
       prisma.user.count({
